@@ -324,7 +324,7 @@ function renderNafilePrayers() {
           <div class="nafile-time">${prayer.time} - ${prayer.description}</div>
         </div>
         <label class="nafile-checkbox">
-          <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="handleNafileCheckbox('${prayer.id}', this.checked)">
+          <input type="checkbox" id="nafile-${prayer.id}" name="nafile-${prayer.id}" ${isChecked ? 'checked' : ''} onchange="handleNafileCheckbox('${prayer.id}', this.checked)">
           <span class="checkbox-custom"></span>
         </label>
       </div>
