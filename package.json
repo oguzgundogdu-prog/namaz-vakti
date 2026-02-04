@@ -1,0 +1,31 @@
+{
+  "name": "namaz-vakti",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Namaz Vakti Uygulaması",
+  "author": "Antigravity",
+  "type": "module",
+  "main": "electron/main.js",
+  "homepage": "https://ogzgn.github.io/namaz-vakti",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron:dev": "set NODE_ENV=development && electron .",
+    "build:exe": "vite build && electron-builder",
+    "deploy": "vite build && gh-pages -d dist"
+  },
+  "build": {
+    "appId": "com.namazvakti.app",
+    "productName": "Namaz Vakti",
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.0",
+    "gh-pages": "^6.1.1"
+  }
+}
