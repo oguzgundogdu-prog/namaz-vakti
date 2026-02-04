@@ -296,6 +296,7 @@ function formatTime(date) {
 // Render Nafile Prayers
 function renderNafilePrayers() {
   const nafileData = [
+    { id: 'teheccud', name: 'Teheccüd', time: prayerData?.timings?.Tahajjud || '--:--', description: 'İmsak\'tan 1 saat önce' },
     { id: 'israk', name: 'İşrak', time: nafileTimes.israk, description: 'Güneş doğduktan 20 dk sonra' },
     { id: 'kusluk', name: 'Kuşluk', time: nafileTimes.kusluk, description: 'Sabah ortası' },
     { id: 'evvabin', name: 'Evvabin', time: nafileTimes.evvabin, description: 'Akşam-Yatsı arası' }
