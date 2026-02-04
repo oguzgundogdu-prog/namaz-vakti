@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/namaz-vakti/assets/index-BAf3zzZ9.js"></script>
-  <link rel="stylesheet" crossorigin href="/namaz-vakti/assets/index-C2yfQMRT.css">
+  <script type="module" crossorigin src="/namaz-vakti/assets/index-DJeN55Tz.js"></script>
+  <link rel="stylesheet" crossorigin href="/namaz-vakti/assets/index-W4u90-Fi.css">
 </head>
 
 <body>
@@ -49,16 +49,37 @@
         </div>
       </section>
 
+
       <section class="prayer-times-section">
-        <div class="section-header">
-          <h3>Bugünün Namaz Vakitleri</h3>
-          <div class="decorative-line"></div>
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="farz">Farz Namazlar</button>
+          <button class="tab-btn" data-tab="nafile">Nafile Namazlar</button>
         </div>
-        <div class="prayer-times-list" id="prayer-times-list">
-          <!-- Prayer times will be injected here via JS -->
-          <div class="loading-spinner">
-            <div class="spinner-circle"></div>
-            <p>Namaz vakitleri yükleniyor...</p>
+
+        <!-- Farz Namazlar Tab Content -->
+        <div class="tab-content active" id="farz-content">
+          <div class="section-header">
+            <h3>Bugünün Namaz Vakitleri</h3>
+            <div class="decorative-line"></div>
+          </div>
+          <div class="prayer-times-list" id="prayer-times-list">
+            <!-- Prayer times will be injected here via JS -->
+            <div class="loading-spinner">
+              <div class="spinner-circle"></div>
+              <p>Namaz vakitleri yükleniyor...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nafile Namazlar Tab Content -->
+        <div class="tab-content" id="nafile-content">
+          <div class="section-header">
+            <h3>Nafile Namazlar</h3>
+            <div class="decorative-line"></div>
+          </div>
+          <div class="nafile-list" id="nafile-list">
+            <!-- Nafile prayers will be injected here via JS -->
           </div>
         </div>
       </section>
