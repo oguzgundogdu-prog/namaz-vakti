@@ -4,6 +4,7 @@ const dateDisplayEl = document.getElementById('date-display');
 const nextPrayerNameEl = document.getElementById('next-prayer-name');
 const countdownEl = document.getElementById('countdown');
 const prayerTimesListEl = document.getElementById('prayer-times-list');
+const notificationToggleEl = document.getElementById('notification-toggle');
 
 // Configuration
 const API_URL = 'https://api.aladhan.com/v1/timings';
@@ -18,12 +19,29 @@ const PRAYER_NAMES_TR = {
   Isha: 'Yatsı'
 };
 
+// Make PRAYER_NAMES_TR available globally for notifications.js
+window.PRAYER_NAMES_TR = PRAYER_NAMES_TR;
+
 const ORDERED_PRAYERS = ['Tahajjud', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
 // State
 let prayerData = null;
 let nextPrayerTime = null;
 let countdownInterval = null;
+let prayerNotifications = null;
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registered:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  });
+}
 
 // Initialize
 async function init() {
@@ -213,5 +231,58 @@ function updateNextPrayer() {
 function pad(num) {
   return num.toString().padStart(2, '0');
 }
+
+// Initialize notifications
+function initNotifications() {
+  if (typeof window.PrayerNotifications === 'undefined') {
+    console.warn('PrayerNotifications not loaded yet');
+    return;
+  }
+
+  prayerNotifications = new window.PrayerNotifications();
+
+  // Update notification button state
+  updateNotificationButton();
+
+  // Notification toggle button
+  notificationToggleEl.addEventListener('click', async () => {
+    if (prayerNotifications.permission === 'granted' && prayerNotifications.settings.enabled) {
+      // Disable notifications
+      prayerNotifications.settings.enabled = false;
+      prayerNotifications.saveSettings();
+      prayerNotifications.stopChecking();
+      updateNotificationButton();
+    } else {
+      // Request permission and enable
+      const granted = await prayerNotifications.requestPermission();
+      if (granted && prayerData) {
+        prayerNotifications.startChecking(prayerData);
+      }
+      updateNotificationButton();
+    }
+  });
+
+  // Start checking if enabled and we have data
+  if (prayerNotifications.settings.enabled && prayerData) {
+    prayerNotifications.startChecking(prayerData);
+  }
+}
+
+function updateNotificationButton() {
+  if (!prayerNotifications) return;
+
+  if (prayerNotifications.permission === 'granted' && prayerNotifications.settings.enabled) {
+    notificationToggleEl.classList.add('active');
+    notificationToggleEl.title = 'Bildirimler Açık (Kapatmak için tıklayın)';
+  } else {
+    notificationToggleEl.classList.remove('active');
+    notificationToggleEl.title = 'Bildirimler Kapalı (Açmak için tıklayın)';
+  }
+}
+
+// Wait for PrayerNotifications to load, then initialize
+window.addEventListener('load', () => {
+  setTimeout(initNotifications, 100);
+});
 
 init();

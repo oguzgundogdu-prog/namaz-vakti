@@ -183,6 +183,40 @@ header {
   filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.5));
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-button {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+}
+
+.icon-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.05);
+}
+
+.icon-button.active {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+}
+
+.icon-button.active:hover {
+  background: #f59e0b;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+}
+
 .date-display {
   font-size: 0.9rem;
   color: var(--text-muted);
@@ -463,45 +497,125 @@ h2 {
 
 /* Responsive Design */
 @media (max-width: 520px) {
+  body {
+    align-items: flex-start;
+    padding: 0;
+  }
+
   .app-container {
-    margin: 10px;
-    padding: 24px;
-    border-radius: 24px;
+    margin: 5px;
+    padding: 60px 20px 20px 20px;
+    border-radius: 20px;
+    gap: 16px;
+    max-height: calc(100vh - 10px);
+    max-height: calc(100dvh - 10px);
+    overflow-y: auto;
   }
 
-  .countdown {
-    font-size: 3.2rem;
+  .scholar-portrait {
+    width: 120px;
+    height: 120px;
+    margin: -40px auto 0 auto;
   }
 
-  h2 {
-    font-size: 2.2rem;
-  }
-
-  .prayer-item {
-    padding: 16px 20px;
+  .portrait-glow {
+    width: 150px;
+    height: 150px;
   }
 
   header {
-    gap: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .location-badge {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .date-display {
+    font-size: 0.85rem;
+  }
+
+  .icon-button {
+    padding: 8px;
+  }
+
+  .hero-section {
+    padding: 16px 0;
+    gap: 8px;
+  }
+
+  .next-prayer-label {
+    font-size: 0.85rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .countdown {
+    font-size: 2.5rem;
+  }
+
+  .prayer-times-section {
+    gap: 16px;
+  }
+
+  .section-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .prayer-item {
+    padding: 12px 16px;
+  }
+
+  .prayer-name {
+    font-size: 1rem;
+  }
+
+  .prayer-time {
+    font-size: 1.05rem;
   }
 }
 
 @media (max-width: 380px) {
   .app-container {
-    padding: 20px;
+    margin: 3px;
+    padding: 50px 16px 16px 16px;
+    gap: 12px;
+  }
+
+  .scholar-portrait {
+    width: 100px;
+    height: 100px;
+    margin: -35px auto 0 auto;
+  }
+
+  .portrait-glow {
+    width: 130px;
+    height: 130px;
   }
 
   .countdown {
-    font-size: 2.8rem;
-    letter-spacing: 2px;
+    font-size: 2rem;
+    letter-spacing: 1px;
   }
 
   h2 {
-    font-size: 2rem;
+    font-size: 1.5rem;
+  }
+
+  .prayer-item {
+    padding: 10px 14px;
   }
 
   .prayer-name,
   .prayer-time {
+    font-size: 0.95rem;
+  }
+
+  .section-header h3 {
     font-size: 1rem;
   }
 }

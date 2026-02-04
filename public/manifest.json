@@ -1,0 +1,47 @@
+{
+    "name": "Namaz Vakitleri",
+    "short_name": "Namaz Vakti",
+    "description": "Modern ve şık namaz vakitleri uygulaması. Bulunduğunuz konuma göre günlük namaz saatlerini öğrenin.",
+    "start_url": "/namaz-vakti/",
+    "scope": "/namaz-vakti/",
+    "display": "standalone",
+    "background_color": "#0c4a6e",
+    "theme_color": "#0891b2",
+    "orientation": "portrait-primary",
+    "categories": [
+        "lifestyle",
+        "utilities"
+    ],
+    "lang": "tr",
+    "dir": "ltr",
+    "icons": [
+        {
+            "src": "/namaz-vakti/icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/namaz-vakti/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [],
+    "shortcuts": [
+        {
+            "name": "Bugünün Vakitleri",
+            "short_name": "Vakitler",
+            "description": "Bugünün namaz vakitlerini görüntüle",
+            "url": "/namaz-vakti/",
+            "icons": [
+                {
+                    "src": "/namaz-vakti/icons/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "prefer_related_applications": false
+}

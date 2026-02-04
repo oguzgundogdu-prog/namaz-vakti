@@ -6,7 +6,7 @@
   "author": "Antigravity",
   "type": "module",
   "main": "electron/main.js",
-  "homepage": "https://ogzgn.github.io/namaz-vakti",
+  "homepage": "https://oguzgundogdu-prog.github.io/namaz-vakti",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
