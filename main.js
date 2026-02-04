@@ -19,7 +19,7 @@ const PRAYER_NAMES_TR = {
   Isha: 'Yatsı'
 };
 
-const ORDERED_PRAYERS = ['Tahajjud', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+const ORDERED_PRAYERS = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
 // State
 let prayerData = null;
