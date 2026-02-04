@@ -5,8 +5,6 @@ const nextPrayerNameEl = document.getElementById('next-prayer-name');
 const countdownEl = document.getElementById('countdown');
 const prayerTimesListEl = document.getElementById('prayer-times-list');
 const nafileListEl = document.getElementById('nafile-list');
-const tabButtons = document.querySelectorAll('.tab-btn');
-const tabContents = document.querySelectorAll('.tab-content');
 
 // Configuration
 const API_URL = 'https://api.aladhan.com/v1/timings';
@@ -238,17 +236,28 @@ function pad(num) {
 init();
 // Tab Switching
 function initTabs() {
-  tabButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const tabName = button.dataset.tab;
+  const buttons = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
 
-      // Remove active class from all
-      tabButtons.forEach(btn => btn.classList.remove('active'));
-      tabContents.forEach(content => content.classList.remove('active'));
+  if (!buttons || buttons.length === 0) {
+    console.warn('Tab buttons not found');
+    return;
+  }
 
-      // Add active class to clicked
-      button.classList.add('active');
-      document.getElementById(`${tabName}-content`).classList.add('active');
+  buttons.forEach(button => {
+    button.addEventListener('click', function () {
+      const tabName = this.getAttribute('data-tab');
+
+      // Remove active from all
+      buttons.forEach(btn => btn.classList.remove('active'));
+      contents.forEach(content => content.classList.remove('active'));
+
+      // Add active to clicked
+      this.classList.add('active');
+      const target = document.getElementById(tabName + '-content');
+      if (target) {
+        target.classList.add('active');
+      }
     });
   });
 }
