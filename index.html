@@ -48,16 +48,37 @@
         </div>
       </section>
 
+
       <section class="prayer-times-section">
-        <div class="section-header">
-          <h3>Bugünün Namaz Vakitleri</h3>
-          <div class="decorative-line"></div>
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="farz">Farz Namazlar</button>
+          <button class="tab-btn" data-tab="nafile">Nafile Namazlar</button>
         </div>
-        <div class="prayer-times-list" id="prayer-times-list">
-          <!-- Prayer times will be injected here via JS -->
-          <div class="loading-spinner">
-            <div class="spinner-circle"></div>
-            <p>Namaz vakitleri yükleniyor...</p>
+
+        <!-- Farz Namazlar Tab Content -->
+        <div class="tab-content active" id="farz-content">
+          <div class="section-header">
+            <h3>Bugünün Namaz Vakitleri</h3>
+            <div class="decorative-line"></div>
+          </div>
+          <div class="prayer-times-list" id="prayer-times-list">
+            <!-- Prayer times will be injected here via JS -->
+            <div class="loading-spinner">
+              <div class="spinner-circle"></div>
+              <p>Namaz vakitleri yükleniyor...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nafile Namazlar Tab Content -->
+        <div class="tab-content" id="nafile-content">
+          <div class="section-header">
+            <h3>Nafile Namazlar</h3>
+            <div class="decorative-line"></div>
+          </div>
+          <div class="nafile-list" id="nafile-list">
+            <!-- Nafile prayers will be injected here via JS -->
           </div>
         </div>
       </section>

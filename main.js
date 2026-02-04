@@ -4,6 +4,9 @@ const dateDisplayEl = document.getElementById('date-display');
 const nextPrayerNameEl = document.getElementById('next-prayer-name');
 const countdownEl = document.getElementById('countdown');
 const prayerTimesListEl = document.getElementById('prayer-times-list');
+const nafileListEl = document.getElementById('nafile-list');
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
 
 // Configuration
 const API_URL = 'https://api.aladhan.com/v1/timings';
@@ -24,6 +27,7 @@ const ORDERED_PRAYERS = ['Tahajjud', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib
 let prayerData = null;
 let nextPrayerTime = null;
 let countdownInterval = null;
+let nafileTimes = {};
 
 // Initialize
 async function init() {
@@ -84,7 +88,9 @@ async function fetchPrayerTimes(latitude, longitude) {
     if (data.code === 200) {
       prayerData = data.data;
       calculateTahajjud();
+      calculateNafileTimes();
       renderPrayerTimes();
+      renderNafilePrayers();
       setupCountdown();
 
       // Location name will be updated by getLocationName function
@@ -230,3 +236,126 @@ function pad(num) {
 }
 
 init();
+// Tab Switching
+function initTabs() {
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tabName = button.dataset.tab;
+
+      // Remove active class from all
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      tabContents.forEach(content => content.classList.remove('active'));
+
+      // Add active class to clicked
+      button.classList.add('active');
+      document.getElementById(`${tabName}-content`).classList.add('active');
+    });
+  });
+}
+
+// Calculate Nafile Prayer Times
+function calculateNafileTimes() {
+  if (!prayerData || !prayerData.timings) return;
+
+  const timings = prayerData.timings;
+
+  // İşrak: 15-20 dakika after sunrise
+  const sunriseTime = parseTime(timings.Sunrise);
+  const israkTime = new Date(sunriseTime.getTime() + 20 * 60 * 1000);
+
+  // Kuşluk: Fixed time 10:30
+  const kuslukTime = new Date();
+  kuslukTime.setHours(10, 30, 0, 0);
+
+  // Evvabin: Between Maghrib and Isha (Maghrib + 15 mins)
+  const maghribTime = parseTime(timings.Maghrib);
+  const evvabinTime = new Date(maghribTime.getTime() + 15 * 60 * 1000);
+
+  nafileTimes = {
+    israk: formatTime(israkTime),
+    kusluk: formatTime(kuslukTime),
+    evvabin: formatTime(evvabinTime)
+  };
+}
+
+// Parse time string to Date object
+function parseTime(timeStr) {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+}
+
+// Format Date object to HH:MM
+function formatTime(date) {
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
+// Render Nafile Prayers
+function renderNafilePrayers() {
+  const nafileData = [
+    { id: 'israk', name: 'İşrak', time: nafileTimes.israk, description: 'Güneş doğduktan 20 dk sonra' },
+    { id: 'kusluk', name: 'Kuşluk', time: nafileTimes.kusluk, description: 'Sabah ortası' },
+    { id: 'evvabin', name: 'Evvabin', time: nafileTimes.evvabin, description: 'Akşam-Yatsı arası' }
+  ];
+
+  const checkboxStates = loadCheckboxStates();
+
+  nafileListEl.innerHTML = nafileData.map(prayer => {
+    const isChecked = checkboxStates[prayer.id] || false;
+    const completedClass = isChecked ? 'completed' : '';
+
+    return `
+      <div class="nafile-item ${completedClass}" data-prayer-id="${prayer.id}">
+        <div class="nafile-item-info">
+          <div class="nafile-name">${prayer.name}</div>
+          <div class="nafile-time">${prayer.time} - ${prayer.description}</div>
+        </div>
+        <label class="nafile-checkbox">
+          <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="handleNafileCheckbox('${prayer.id}', this.checked)">
+          <span class="checkbox-custom"></span>
+        </label>
+      </div>
+    `;
+  }).join('');
+}
+
+// Handle Checkbox Change
+function handleNafileCheckbox(prayerId, isChecked) {
+  saveCheckboxState(prayerId, isChecked);
+
+  const item = document.querySelector(`[data-prayer-id="${prayerId}"]`);
+  if (isChecked) {
+    item.classList.add('completed');
+  } else {
+    item.classList.remove('completed');
+  }
+}
+
+// Save Checkbox State to localStorage
+function saveCheckboxState(prayerId, isChecked) {
+  const states = loadCheckboxStates();
+  states[prayerId] = isChecked;
+  localStorage.setItem('nafileCheckboxes', JSON.stringify(states));
+}
+
+// Load Checkbox States from localStorage
+function loadCheckboxStates() {
+  const today = new Date().toDateString();
+  const stored = localStorage.getItem('nafileCheckboxes');
+  const storedDate = localStorage.getItem('nafileCheckboxesDate');
+
+  // Reset if new day
+  if (storedDate !== today) {
+    localStorage.setItem('nafileCheckboxesDate', today);
+    localStorage.removeItem('nafileCheckboxes');
+    return {};
+  }
+
+  return stored ? JSON.parse(stored) : {};
+}
+
+// Make handleNafileCheckbox global for onclick attribute
+window.handleNafileCheckbox = handleNafileCheckbox;
