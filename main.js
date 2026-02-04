@@ -85,7 +85,6 @@ async function fetchPrayerTimes(latitude, longitude) {
 
     if (data.code === 200) {
       prayerData = data.data;
-      calculateTahajjud();
       calculateNafileTimes();
       renderPrayerTimes();
       renderNafilePrayers();
