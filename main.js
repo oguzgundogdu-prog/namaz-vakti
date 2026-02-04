@@ -233,7 +233,6 @@ function pad(num) {
   return num.toString().padStart(2, '0');
 }
 
-init();
 // Tab Switching
 function initTabs() {
   const buttons = document.querySelectorAll('.tab-btn');
@@ -369,3 +368,10 @@ function loadCheckboxStates() {
 
 // Make handleNafileCheckbox global for onclick attribute
 window.handleNafileCheckbox = handleNafileCheckbox;
+
+// Make handleNafileCheckbox global for onclick attribute
+window.handleNafileCheckbox = handleNafileCheckbox;
+
+// Initialize app after all functions are defined
+initTabs();
+init();

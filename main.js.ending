@@ -1,0 +1,7 @@
+
+// Make handleNafileCheckbox global for onclick attribute
+window.handleNafileCheckbox = handleNafileCheckbox;
+
+// Initialize app after all functions are defined
+initTabs();
+init();
