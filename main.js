@@ -4,7 +4,6 @@ const dateDisplayEl = document.getElementById('date-display');
 const nextPrayerNameEl = document.getElementById('next-prayer-name');
 const countdownEl = document.getElementById('countdown');
 const prayerTimesListEl = document.getElementById('prayer-times-list');
-const notificationToggleEl = document.getElementById('notification-toggle');
 
 // Configuration
 const API_URL = 'https://api.aladhan.com/v1/timings';
@@ -19,29 +18,12 @@ const PRAYER_NAMES_TR = {
   Isha: 'Yatsı'
 };
 
-// Make PRAYER_NAMES_TR available globally for notifications.js
-window.PRAYER_NAMES_TR = PRAYER_NAMES_TR;
-
 const ORDERED_PRAYERS = ['Tahajjud', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
 // State
 let prayerData = null;
 let nextPrayerTime = null;
 let countdownInterval = null;
-let prayerNotifications = null;
-
-// Register Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registered:', registration.scope);
-      })
-      .catch((error) => {
-        console.error('Service Worker registration failed:', error);
-      });
-  });
-}
 
 // Initialize
 async function init() {
@@ -70,32 +52,33 @@ function getPosition() {
   });
 }
 
-async function getLocationName(lat, lng) {
+async function getLocationName(latitude, longitude) {
   try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=tr`);
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=tr`
+    );
     const data = await response.json();
 
-    if (data.address) {
-      const city = data.address.city || data.address.town || data.address.state || data.address.province;
-      if (city) {
-        locationNameEl.textContent = city;
-      }
+    if (data && data.address) {
+      const city = data.address.city ||
+        data.address.town ||
+        data.address.village ||
+        data.address.state ||
+        'İstanbul';
+      locationNameEl.textContent = city;
     }
   } catch (error) {
-    console.error('Konum adı alınamadı:', error);
-    // Konum adı alınamazsa sadece varsayılan kalır
+    console.error('Konum ismi alınamadı:', error);
+    // Keep default or existing location name
   }
 }
 
-function updateDateDisplay() {
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  dateDisplayEl.textContent = new Date().toLocaleDateString('tr-TR', options);
-}
-
-async function fetchPrayerTimes(lat, lng) {
+async function fetchPrayerTimes(latitude, longitude) {
   try {
-    const date = Math.floor(Date.now() / 1000); // Unix timestamp
-    const response = await fetch(`${API_URL}/${date}?latitude=${lat}&longitude=${lng}&method=${CALCULATION_METHOD}`);
+    const timestamp = Math.floor(Date.now() / 1000);
+    const url = `${API_URL}/${timestamp}?latitude=${latitude}&longitude=${longitude}&method=${CALCULATION_METHOD}`;
+
+    const response = await fetch(url);
     const data = await response.json();
 
     if (data.code === 200) {
@@ -106,11 +89,11 @@ async function fetchPrayerTimes(lat, lng) {
 
       // Location name will be updated by getLocationName function
     } else {
-      throw new Error('API Error');
+      throw new Error('API error');
     }
   } catch (error) {
-    console.error('Veri çekme hatası:', error);
-    prayerTimesListEl.innerHTML = '<div class="loading-spinner">Veri çekilemedi. Lütfen sayfayı yenileyin.</div>';
+    console.error('Namaz vakitleri alınamadı:', error);
+    prayerTimesListEl.innerHTML = '<p style="text-align:center;">Veriler yüklenemedi. Lütfen tekrar deneyin.</p>';
   }
 }
 
@@ -136,72 +119,87 @@ function calculateTahajjud() {
 }
 
 function renderPrayerTimes() {
-  prayerTimesListEl.innerHTML = '';
+  if (!prayerData) return;
+
   const timings = prayerData.timings;
+  const now = new Date();
 
-  ORDERED_PRAYERS.forEach(key => {
-    const time = timings[key];
-    const trName = PRAYER_NAMES_TR[key];
+  prayerTimesListEl.innerHTML = ORDERED_PRAYERS.map((prayer) => {
+    const timeStr = timings[prayer];
+    const [hours, minutes] = timeStr.split(':').map(Number);
 
-    const div = document.createElement('div');
-    div.className = 'prayer-item';
-    div.dataset.key = key; // for highlighting later
+    const prayerTime = new Date();
+    prayerTime.setHours(hours, minutes, 0, 0);
 
-    div.innerHTML = `
-      <span class="prayer-name">${trName}</span>
-      <span class="prayer-time">${time}</span>
+    const isPast = prayerTime < now;
+
+    return `
+      <div class="prayer-item ${isPast ? 'past' : ''}" data-prayer="${prayer}">
+        <span class="prayer-name">${PRAYER_NAMES_TR[prayer]}</span>
+        <span class="prayer-time">${timeStr}</span>
+      </div>
     `;
-
-    prayerTimesListEl.appendChild(div);
-  });
+  }).join('');
 }
 
 function setupCountdown() {
-  updateNextPrayer();
-  if (countdownInterval) clearInterval(countdownInterval);
-  countdownInterval = setInterval(updateNextPrayer, 1000);
-}
-
-function updateNextPrayer() {
   if (!prayerData) return;
 
-  const now = new Date();
   const timings = prayerData.timings;
+  const now = new Date();
+
+  // Find next prayer
   let nextPrayer = null;
-  let minDiff = Infinity;
-  let nextPrayerKey = '';
+  let isTomorrow = false;
 
-  // Check today's prayers
-  for (const key of ORDERED_PRAYERS) {
-    const timeStr = timings[key];
+  for (const prayer of ORDERED_PRAYERS) {
+    const timeStr = timings[prayer];
     const [hours, minutes] = timeStr.split(':').map(Number);
-    const prayerDate = new Date();
-    prayerDate.setHours(hours, minutes, 0, 0);
 
-    if (prayerDate > now) {
-      const diff = prayerDate - now;
-      if (diff < minDiff) {
-        minDiff = diff;
-        nextPrayer = prayerDate;
-        nextPrayerKey = key;
-      }
+    const prayerTime = new Date();
+    prayerTime.setHours(hours, minutes, 0, 0);
+
+    if (prayerTime > now) {
+      nextPrayer = { key: prayer, time: prayerTime };
+      break;
     }
   }
 
-  // If no prayer left today, next is Fajr of tomorrow
-  let isTomorrow = false;
+  // If no prayer found for today, next is first prayer tomorrow
   if (!nextPrayer) {
-    const timeStr = timings['Fajr'];
+    const firstPrayer = ORDERED_PRAYERS[0];
+    const timeStr = timings[firstPrayer];
     const [hours, minutes] = timeStr.split(':').map(Number);
-    nextPrayer = new Date();
-    nextPrayer.setDate(nextPrayer.getDate() + 1);
-    nextPrayer.setHours(hours, minutes, 0, 0);
-    nextPrayerKey = 'Fajr';
+
+    const prayerTime = new Date();
+    prayerTime.setDate(prayerTime.getDate() + 1);
+    prayerTime.setHours(hours, minutes, 0, 0);
+
+    nextPrayer = { key: firstPrayer, time: prayerTime };
     isTomorrow = true;
   }
 
-  // Update DOM
-  const timeDiff = nextPrayer - new Date();
+  nextPrayerTime = nextPrayer.time;
+
+  // Highlight next prayer
+  document.querySelectorAll('.prayer-item').forEach(item => {
+    if (item.dataset.prayer === nextPrayer.key && !isTomorrow) {
+      item.classList.add('active');
+    }
+  });
+
+  // Update countdown
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+  }
+
+  updateCountdown(nextPrayer.key, isTomorrow);
+  countdownInterval = setInterval(() => updateCountdown(nextPrayer.key, isTomorrow), 1000);
+}
+
+function updateCountdown(nextPrayerKey, isTomorrow) {
+  const now = new Date();
+  const timeDiff = nextPrayerTime - now;
 
   if (timeDiff < 0) {
     // Should re-run logic if time passed during interval
@@ -218,71 +216,17 @@ function updateNextPrayer() {
 
   const nextName = PRAYER_NAMES_TR[nextPrayerKey];
   nextPrayerNameEl.textContent = isTomorrow ? `${nextName} (Yarın)` : nextName;
+}
 
-  // Highlight active/next prayer
-  document.querySelectorAll('.prayer-item').forEach(item => {
-    item.classList.remove('active');
-    if (item.dataset.key === nextPrayerKey) {
-      item.classList.add('active');
-    }
-  });
+function updateDateDisplay() {
+  const now = new Date();
+  const options = { day: '2-digit', month: 'long', year: 'numeric' };
+  const dateStr = now.toLocaleDateString('tr-TR', options);
+  dateDisplayEl.textContent = dateStr;
 }
 
 function pad(num) {
   return num.toString().padStart(2, '0');
 }
-
-// Initialize notifications
-function initNotifications() {
-  if (typeof window.PrayerNotifications === 'undefined') {
-    console.warn('PrayerNotifications not loaded yet');
-    return;
-  }
-
-  prayerNotifications = new window.PrayerNotifications();
-
-  // Update notification button state
-  updateNotificationButton();
-
-  // Notification toggle button
-  notificationToggleEl.addEventListener('click', async () => {
-    if (prayerNotifications.permission === 'granted' && prayerNotifications.settings.enabled) {
-      // Disable notifications
-      prayerNotifications.settings.enabled = false;
-      prayerNotifications.saveSettings();
-      prayerNotifications.stopChecking();
-      updateNotificationButton();
-    } else {
-      // Request permission and enable
-      const granted = await prayerNotifications.requestPermission();
-      if (granted && prayerData) {
-        prayerNotifications.startChecking(prayerData);
-      }
-      updateNotificationButton();
-    }
-  });
-
-  // Start checking if enabled and we have data
-  if (prayerNotifications.settings.enabled && prayerData) {
-    prayerNotifications.startChecking(prayerData);
-  }
-}
-
-function updateNotificationButton() {
-  if (!prayerNotifications) return;
-
-  if (prayerNotifications.permission === 'granted' && prayerNotifications.settings.enabled) {
-    notificationToggleEl.classList.add('active');
-    notificationToggleEl.title = 'Bildirimler Açık (Kapatmak için tıklayın)';
-  } else {
-    notificationToggleEl.classList.remove('active');
-    notificationToggleEl.title = 'Bildirimler Kapalı (Açmak için tıklayın)';
-  }
-}
-
-// Wait for PrayerNotifications to load, then initialize
-window.addEventListener('load', () => {
-  setTimeout(initNotifications, 100);
-});
 
 init();
