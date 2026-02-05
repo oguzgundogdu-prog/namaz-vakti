@@ -34,8 +34,19 @@
         </svg>
         <span id="location-name">Konum Alınıyor...</span>
       </div>
-      <div class="date-display" id="date-display">
-        --.--.----
+      <div class="header-right">
+        <div class="date-display" id="date-display">
+          --.--.----
+        </div>
+        <button class="icon-button" id="settings-btn" aria-label="Ayarlar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+              d="M12 1v6m0 6v6m9-9h-6m-6 0H3m15.364 6.364l-4.243-4.243m-6.364 0l-4.243 4.243m12.728 0l-4.243-4.243m-6.364 0l-4.243 4.243">
+            </path>
+          </svg>
+        </button>
       </div>
     </header>
 
@@ -85,6 +96,74 @@
     </main>
 
   </div>
+
+  <!-- Settings Sidebar -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="settings-sidebar" id="settings-sidebar">
+    <div class="sidebar-header">
+      <h2>Ayarlar</h2>
+      <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="Kapat">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Sidebar Tabs -->
+    <div class="sidebar-tabs">
+      <button class="sidebar-tab-btn active" data-sidebar-tab="imsakiye">İmsakiye</button>
+      <button class="sidebar-tab-btn" data-sidebar-tab="quotes">Hikmetli Sözler</button>
+    </div>
+
+    <!-- Sidebar Content -->
+    <div class="sidebar-content">
+      <!-- İmsakiye Tab -->
+      <div class="sidebar-tab-content active" id="imsakiye-content">
+        <div class="month-selector">
+          <button class="month-nav-btn" id="prev-month-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h3 id="current-month-display">--</h3>
+          <button class="month-nav-btn" id="next-month-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="calendar-table-wrapper">
+          <table class="calendar-table" id="calendar-table">
+            <thead>
+              <tr>
+                <th>Gün</th>
+                <th>İmsak</th>
+                <th>Güneş</th>
+                <th>Öğle</th>
+                <th>İkindi</th>
+                <th>Akşam</th>
+                <th>Yatsı</th>
+              </tr>
+            </thead>
+            <tbody id="calendar-tbody">
+              <!-- Calendar rows will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Hikmetli Sözler Tab -->
+      <div class="sidebar-tab-content" id="quotes-content">
+        <div class="quotes-list" id="quotes-list">
+          <!-- Quotes will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </aside>
 
   <div class="background-overlay"></div>
   <script type="module" src="/main.js"></script>

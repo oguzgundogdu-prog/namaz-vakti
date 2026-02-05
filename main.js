@@ -34,12 +34,15 @@ async function init() {
   try {
     const position = await getPosition();
     const { latitude, longitude } = position.coords;
+    // Save coordinates for sidebar calendar
+    userCoordinates = { latitude, longitude };
     await fetchPrayerTimes(latitude, longitude);
     await getLocationName(latitude, longitude);
   } catch (error) {
     console.error('Konum hatası:', error);
     locationNameEl.textContent = 'İstanbul';
     // Fallback to Istanbul coordinates
+    userCoordinates = { latitude: 41.0082, longitude: 28.9784 };
     await fetchPrayerTimes(41.0082, 28.9784);
   }
 }
@@ -369,9 +372,209 @@ function loadCheckboxStates() {
 // Make handleNafileCheckbox global for onclick attribute
 window.handleNafileCheckbox = handleNafileCheckbox;
 
-// Make handleNafileCheckbox global for onclick attribute
-window.handleNafileCheckbox = handleNafileCheckbox;
+// ============================================
+// Settings Sidebar
+// ============================================
+
+// Sidebar State
+let currentCalendarMonth = new Date().getMonth(); // 0-11
+let currentCalendarYear = new Date().getFullYear();
+let calendarData = null;
+let userCoordinates = { latitude: 41.0082, longitude: 28.9784 }; // Default Istanbul
+
+// Sidebar Elements
+const settingsBtn = document.getElementById('settings-btn');
+const sidebar = document.getElementById('settings-sidebar');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+const sidebarTabBtns = document.querySelectorAll('.sidebar-tab-btn');
+const prevMonthBtn = document.getElementById('prev-month-btn');
+const nextMonthBtn = document.getElementById('next-month-btn');
+const currentMonthDisplay = document.getElementById('current-month-display');
+const calendarTbody = document.getElementById('calendar-tbody');
+const quotesList = document.getElementById('quotes-list');
+
+// Open Sidebar
+function openSidebar() {
+  sidebar.classList.add('active');
+  sidebarOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Close Sidebar
+function closeSidebar() {
+  sidebar.classList.remove('active');
+  sidebarOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Event Listeners
+if (settingsBtn) {
+  settingsBtn.addEventListener('click', () => {
+    openSidebar();
+    // Load calendar on first open
+    if (!calendarData) {
+      fetchMonthlyCalendar(currentCalendarYear, currentCalendarMonth + 1);
+    }
+    // Load quotes on first open
+    if (quotesList && quotesList.children.length === 0) {
+      renderQuotes();
+    }
+  });
+}
+
+if (sidebarCloseBtn) {
+  sidebarCloseBtn.addEventListener('click', closeSidebar);
+}
+
+if (sidebarOverlay) {
+  sidebarOverlay.addEventListener('click', closeSidebar);
+}
+
+// Sidebar Tab Switching
+sidebarTabBtns.forEach(btn => {
+  btn.addEventListener('click', function () {
+    const tabName = this.getAttribute('data-sidebar-tab');
+
+    // Remove active from all
+    sidebarTabBtns.forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sidebar-tab-content').forEach(content => {
+      content.classList.remove('active');
+    });
+
+    // Add active to clicked
+    this.classList.add('active');
+    const targetContent = document.getElementById(tabName + '-content');
+    if (targetContent) {
+      targetContent.classList.add('active');
+    }
+  });
+});
+
+// Month Navigation
+if (prevMonthBtn) {
+  prevMonthBtn.addEventListener('click', () => {
+    currentCalendarMonth--;
+    if (currentCalendarMonth < 0) {
+      currentCalendarMonth = 11;
+      currentCalendarYear--;
+    }
+    fetchMonthlyCalendar(currentCalendarYear, currentCalendarMonth + 1);
+  });
+}
+
+if (nextMonthBtn) {
+  nextMonthBtn.addEventListener('click', () => {
+    currentCalendarMonth++;
+    if (currentCalendarMonth > 11) {
+      currentCalendarMonth = 0;
+      currentCalendarYear++;
+    }
+    fetchMonthlyCalendar(currentCalendarYear, currentCalendarMonth + 1);
+  });
+}
+
+// Fetch Monthly Calendar
+async function fetchMonthlyCalendar(year, month) {
+  try {
+    const url = `https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&method=${CALCULATION_METHOD}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.code === 200 && data.data) {
+      calendarData = data.data;
+      renderCalendar();
+      updateMonthDisplay();
+    } else {
+      throw new Error('Calendar API error');
+    }
+  } catch (error) {
+    console.error('Aylık takvim yüklenemedi:', error);
+    if (calendarTbody) {
+      calendarTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px;">Takvim yüklenemedi</td></tr>';
+    }
+  }
+}
+
+// Render Calendar Table
+function renderCalendar() {
+  if (!calendarData || !calendarTbody) return;
+
+  const today = new Date();
+  const todayDay = today.getDate();
+  const todayMonth = today.getMonth();
+  const todayYear = today.getFullYear();
+
+  const isCurrentMonth = currentCalendarMonth === todayMonth && currentCalendarYear === todayYear;
+
+  calendarTbody.innerHTML = calendarData.map((dayData, index) => {
+    const timings = dayData.timings;
+    const day = index + 1;
+    const isToday = isCurrentMonth && day === todayDay;
+
+    return `
+      <tr class="${isToday ? 'today' : ''}">
+        <td>${day}</td>
+        <td>${timings.Fajr}</td>
+        <td>${timings.Sunrise}</td>
+        <td>${timings.Dhuhr}</td>
+        <td>${timings.Asr}</td>
+        <td>${timings.Maghrib}</td>
+        <td>${timings.Isha}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// Update Month Display
+function updateMonthDisplay() {
+  if (!currentMonthDisplay) return;
+
+  const monthNames = [
+    'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+    'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+  ];
+
+  currentMonthDisplay.textContent = `${monthNames[currentCalendarMonth]} ${currentCalendarYear}`;
+}
+
+// Render Quotes (Placeholder)
+function renderQuotes() {
+  if (!quotesList) return;
+
+  // Placeholder quotes - will be replaced with user's content
+  const placeholderQuotes = [
+    {
+      text: 'Namaz, müminin miracıdır.',
+      author: 'Hz. Muhammed (s.a.v)'
+    },
+    {
+      text: 'Sabır, imanın yarısıdır.',
+      author: 'Hz. Muhammed (s.a.v)'
+    },
+    {
+      text: 'İlim Çin\'de de olsa gidiniz.',
+      author: 'Hz. Muhammed (s.a.v)'
+    }
+  ];
+
+  quotesList.innerHTML = placeholderQuotes.map(quote => `
+    <div class="quote-card">
+      <p class="quote-text">${quote.text}</p>
+      <p class="quote-author">— ${quote.author}</p>
+    </div>
+  `).join('');
+}
+
+// Update user coordinates when location is fetched
+async function fetchPrayerTimesWithCoords(latitude, longitude) {
+  userCoordinates.latitude = latitude;
+  userCoordinates.longitude = longitude;
+  await fetchPrayerTimes(latitude, longitude);
+}
 
 // Initialize app after all functions are defined
 initTabs();
 init();
+
