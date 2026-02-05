@@ -671,6 +671,42 @@ function renderQuotes() {
     {
       text: 'Gezdiğimiz yerlerde talebe var, medrese yapacak para yok. Milyarlar gidiyor başka yerlere ama medreseye para yok. Bunların hepsi ahirette acısını çekecek.',
       author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İlim, amel, ihlas. Üçü bir arada olsun, bunları cemet, dünyayı fethedersin.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İnsanlar et gibi, ulemâ tuz gibidir. Tuzsuz et koktuğu gibi, ulemâdan ve onların sohbetinden mahrum kalanlar da kokar.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Ey talebeler! Sizler kurumuş toprakların yağmur yüklü bulutlarısınız. Direksiz kubbelerin direklerisiniz.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bugünkü tahsil ölümden ötesini haber vermiyor. Buna siz nasıl yüksek tahsil dersiniz?',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bir adam bir kişiye Kur\'ân okutsa bütün dünyaya bedeldir. Bize Kur\'ân okuyup okutmak ufak bir şey mi geliyor?',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bilgisiz bir kimse savaş davuluna benzer; sesi çoktur, içi boştur.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İki kişi iki kişiyi kıskanmaz; baba oğlunu, hoca talebesini.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Hocaların bir âdeti var: bir âyeti okusalar veya dinleseler, söylemek için hemen cemaat gelir hatırına. Halbuki hatırına önce kendini getirmeli. Farkında değil, başkalarına iyilik edecek, kendini yakacak.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İlmi olup da okutmayan, evlerinde boş boş oturan hoca hanımlar keşke iki talebe de olsa okutsaydım da âhirete ev hanımı vasfında gelmeseydim diyecek, bu yola hizmet etmediklerine çok pişman olacaklar.',
+      author: 'Mahmud Efendi (k.s)'
     }
   ];
 
@@ -819,6 +855,42 @@ function getAllQuotes() {
     },
     {
       text: 'Gezdiğimiz yerlerde talebe var, medrese yapacak para yok. Milyarlar gidiyor başka yerlere ama medreseye para yok. Bunların hepsi ahirette acısını çekecek.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İlim, amel, ihlas. Üçü bir arada olsun, bunları cemet, dünyayı fethedersin.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İnsanlar et gibi, ulemâ tuz gibidir. Tuzsuz et koktuğu gibi, ulemâdan ve onların sohbetinden mahrum kalanlar da kokar.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Ey talebeler! Sizler kurumuş toprakların yağmur yüklü bulutlarısınız. Direksiz kubbelerin direklerisiniz.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bugünkü tahsil ölümden ötesini haber vermiyor. Buna siz nasıl yüksek tahsil dersiniz?',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bir adam bir kişiye Kur\'ân okutsa bütün dünyaya bedeldir. Bize Kur\'ân okuyup okutmak ufak bir şey mi geliyor?',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bilgisiz bir kimse savaş davuluna benzer; sesi çoktur, içi boştur.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İki kişi iki kişiyi kıskanmaz; baba oğlunu, hoca talebesini.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Hocaların bir âdeti var: bir âyeti okusalar veya dinleseler, söylemek için hemen cemaat gelir hatırına. Halbuki hatırına önce kendini getirmeli. Farkında değil, başkalarına iyilik edecek, kendini yakacak.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İlmi olup da okutmayan, evlerinde boş boş oturan hoca hanımlar keşke iki talebe de olsa okutsaydım da âhirete ev hanımı vasfında gelmeseydim diyecek, bu yola hizmet etmediklerine çok pişman olacaklar.',
       author: 'Mahmud Efendi (k.s)'
     }
   ];
