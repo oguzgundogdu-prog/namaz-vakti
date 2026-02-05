@@ -12,7 +12,8 @@ const SCHOLAR_PHOTOS = [
   '/namaz-vakti/assets/scholar-1.jpg',
   '/namaz-vakti/assets/scholar-2.jpg',
   '/namaz-vakti/assets/scholar-3.jpg',
-  '/namaz-vakti/assets/scholar-4.jpg'
+  '/namaz-vakti/assets/scholar-4.jpg',
+  '/namaz-vakti/assets/scholar-5.jpg'
 ];
 
 // Function to set random scholar photo
