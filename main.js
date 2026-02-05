@@ -1007,9 +1007,9 @@ function resetDailyIfNeeded(data) {
         prayers: [...data.today.prayers]
       });
 
-      // Keep only last 30 days
-      if (data.history.length > 30) {
-        data.history = data.history.slice(-30);
+      // Keep only last 365 days (1 year)
+      if (data.history.length > 365) {
+        data.history = data.history.slice(-365);
       }
     }
 
@@ -1231,7 +1231,217 @@ if (importBtn && importFile) {
   });
 }
 
+// ============================================
+// Button Event Listeners (Fixed for onclick issue)
+// ============================================
+
+// Attach event listeners to all counter buttons
+document.querySelectorAll('.counter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const prayer = btn.dataset.prayer;
+    const action = btn.dataset.action;
+
+    if (action === 'increment') {
+      incrementQada(prayer);
+    } else if (action === 'decrement') {
+      decrementQada(prayer);
+    }
+  });
+});
+
+// Attach event listeners to complete buttons
+document.querySelectorAll('.complete-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const prayer = btn.dataset.prayer;
+    markQadaComplete(prayer);
+  });
+});
+
+// ============================================
+// Advanced Statistics
+// ============================================
+
+function getAdvancedStats() {
+  const last7Days = qadaData.history.slice(-7);
+  const last30Days = qadaData.history.slice(-30);
+
+  const total7Days = last7Days.reduce((sum, day) => sum + day.completed, 0);
+  const total30Days = last30Days.reduce((sum, day) => sum + day.completed, 0);
+
+  // Include today
+  const todayCompleted = qadaData.today.completed;
+  const total7 = total7Days + todayCompleted;
+  const total30 = total30Days + todayCompleted;
+
+  // Calculate average
+  const average = ((total7) / 7).toFixed(1);
+
+  // Find best day
+  const allDays = [...qadaData.history, qadaData.today];
+  const bestDay = Math.max(...allDays.map(d => d.completed), 0);
+
+  return {
+    total7Days: total7,
+    total30Days: total30,
+    average,
+    bestDay
+  };
+}
+
+// Update render to include advanced stats
+function renderAdvancedStats() {
+  const stats = getAdvancedStats();
+
+  const stat7DaysEl = document.getElementById('stat-7days');
+  const stat30DaysEl = document.getElementById('stat-30days');
+  const statAverageEl = document.getElementById('stat-average');
+  const statBestEl = document.getElementById('stat-best');
+
+  if (stat7DaysEl) stat7DaysEl.textContent = stats.total7Days;
+  if (stat30DaysEl) stat30DaysEl.textContent = stats.total30Days;
+  if (statAverageEl) statAverageEl.textContent = stats.average;
+  if (statBestEl) statBestEl.textContent = stats.bestDay;
+}
+
+// ============================================
+// Chart.js Visualization
+// ============================================
+
+let qadaChart = null;
+
+function initChart() {
+  const canvas = document.getElementById('qadaChart');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+
+  // Get last 30 days data
+  const last30Days = qadaData.history.slice(-30);
+
+  // Generate labels and data
+  const labels = [];
+  const data = [];
+
+  // Fill with  last 30 days
+  for (let i = 29; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+
+    // Find data for this date
+    const dayData = last30Days.find(d => d.date === dateStr);
+
+    // Short label (day number)
+    labels.push(date.getDate());
+    data.push(dayData ? dayData.completed : 0);
+  }
+
+  // Add today
+  labels.push('Bugün');
+  data.push(qadaData.today.completed);
+
+  // Destroy previous chart if exists
+  if (qadaChart) {
+    qadaChart.destroy();
+  }
+
+  // Create new chart
+  qadaChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Kılınan Kaza',
+        data: data,
+        borderColor: 'rgb(6, 182, 212)',
+        backgroundColor: 'rgba(6, 182, 212, 0.1)',
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: 'rgb(6, 182, 212)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          padding: 12,
+          displayColors: false,
+          callbacks: {
+            label: function (context) {
+              return context.parsed.y + ' kaza kılındı';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            color: 'rgba(255, 255, 255, 0.7)',
+            font: {
+              size: 11
+            }
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)',
+            drawBorder: false
+          }
+        },
+        x: {
+          ticks: {
+            color: 'rgba(255, 255, 255, 0.7)',
+            font: {
+              size: 10
+            },
+            maxRotation: 0,
+            autoSkip: true,
+            maxTicksLimit: 15
+          },
+          grid: {
+            display: false,
+            drawBorder: false
+          }
+        }
+      }
+    }
+  });
+}
+
+// Update renderQadaCounters to also update advanced stats and chart
+const originalRenderQadaCounters = renderQadaCounters;
+renderQadaCounters = function () {
+  // Call original function
+  originalRenderQadaCounters();
+
+  // Update advanced stats
+  renderAdvancedStats();
+
+  // Update chart
+  if (typeof Chart !== 'undefined') {
+    initChart();
+  }
+};
+
 // Initial render
 renderQadaCounters();
 renderDailyProgress();
+
+// Initialize chart after a short delay
+setTimeout(() => {
+  if (typeof Chart !== 'undefined') {
+    initChart();
+  }
+}, 100);
 

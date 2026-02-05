@@ -1627,3 +1627,44 @@ h2 {
     padding: 10px 12px;
   }
 }
+
+/* Chart Section */
+.qada-chart-section {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.chart-container {
+  position: relative;
+  height: 200px;
+  width: 100%;
+}
+
+.chart-container canvas {
+  max-height: 200px;
+}
+
+/* Update Stats Grid for 4 cards */
+.qada-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 520px) {
+  .chart-container {
+    height: 180px;
+  }
+}
