@@ -682,6 +682,7 @@ function renderQuotes() {
   `).join('');
 }
 
+
 // Update user coordinates when location is fetched
 async function fetchPrayerTimesWithCoords(latitude, longitude) {
   userCoordinates.latitude = latitude;
@@ -689,7 +690,181 @@ async function fetchPrayerTimesWithCoords(latitude, longitude) {
   await fetchPrayerTimes(latitude, longitude);
 }
 
+// ============================================
+// Daily Quote Modal
+// ============================================
+
+const quoteModalOverlay = document.getElementById('quote-modal-overlay');
+const quoteModalClose = document.getElementById('quote-modal-close');
+const quoteModalText = document.getElementById('quote-modal-text');
+
+// Get all quotes (same array as in renderQuotes)
+function getAllQuotes() {
+  return [
+    {
+      text: 'Gelirsiniz ver bana tarikat, sonra bırakırsınız, namaza başlar, bırakırsınız, çarşafı giyer, çıkarırsınız.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Şalvar giymekten utanırsınız, sakal, cübbe, çarşaf, uzun entari, bakın İslam kıyafetidir bu. Sen bunları giymekle "ben Müslüman\'ım, benim sağlığımda islamiyete kimse yan bakamaz" demek istiyorsun.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Çarşaflarınızı muhafaza ediyorsunuz Elhamdülillah, ama bilmiyorum entarileriniz nasıldır?',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Kadınların şerefi gizli kalmalarında ve erkeklerle görüşmemelerindedir. Kadın çalışacak diye tutturmuş, sonra aç kalırlarmış. Sen karışmasana, o Allahu Teala yarattığının rızkını verir.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Sizin çarşafınız bizim sarığımız, şalvarımız, sizi gören alacağını alıyor, birde tatlı sözlen konuşursan onunla, tamam.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Dilenci at üstünde gelse vereceksin, şüpheleniyorsan az ver, şüphelenmiyorsan çok ver.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Aklı başında olan adamın evinde televizyon olmaz.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'En büyük günah sorulursa, nedir? Kafirlere meyletmektir.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Karınca bacağı kadar olsa bile ekmek atmayın, bu bizi helak eder.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Televizyon hiç Mevla\'yı hatırlatır mı? Zehir zakkum akıtıyor.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Ruh ile beden bir olmazsa bir milyon kere Allah (c.c) desen boş.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Çarşaf giymekle büyük yiğitlik yapıyorsunuz, milletin tesettüre heves etmesine sebep oluyorsunuz.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Çarşafınızı iyi muhafaza edin. Şunu yakinen bilin ki; bir çarşafı, bir sarığı bozmakla Çeçenistan\'a gelen belayı bize de verebilir Cenab-ı hak.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Can vermeli çarşaftan vazgeçmemeli, ne güzel şeydir o.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bu çarşafı giyen hanımlar, bilseler onların sayesinde neler oluyor, yatarken de giyerler. Siz ki Allah için tesettürünüzü muhafaza ettiniz O da sizi muhafaza eder.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bir Hoca yüzbin televizyondan daha tesirlidir.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Rabıta muhabbetle olur, muhabbette ittiba ile olur. İttiba edersen seversin ve sevilirsin.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Mektubattan uzak kalındığı an feyiz kesilir.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Sarığı kabul etmeyenin Peygamberimiz (s.a.v.), Cebrail (a.s.), Allah-u Teala (c.c.)\'de kabul etmiyor.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Dünya içinde herşey melundur, fakat zikrullah ile meşgul olan emri bil maruf nehy-i anil münker yapan okuyan ve okutan değildir.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Avrupa modasına uymak, namazı terk etmekten daha ağır geliyor.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Televizyon seyreden dinini sevmiyor demektir.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bir kimse asılacağından korktuğu gibi imandan küfre döneceğinden de öyle korkacak.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Sen nefsini hak ile meşgul etmezsen, nefis seni batıl ile meşgul eder.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bir kimse emri bil maruf yapacağım diye yola çıksa sonra siyasetten bahsetse, onun azabını kimse ölçemez.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Dünya sevgisi insanı şaraptan daha sarhoş eder ve ateşe girmeye cesaret verir.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Kalın kafalı nefse uyarsan her yerde rezilsin.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'İnsan bir nefes sağ olsa çok ilerler.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Bütün haramlar nefse dostluk, Mevla\'ya (c.c.) düşmanlıktır.',
+      author: 'Mahmud Efendi (k.s)'
+    },
+    {
+      text: 'Gezdiğimiz yerlerde talebe var, medrese yapacak para yok. Milyarlar gidiyor başka yerlere ama medreseye para yok. Bunların hepsi ahirette acısını çekecek.',
+      author: 'Mahmud Efendi (k.s)'
+    }
+  ];
+}
+
+// Show random quote on page load
+function showDailyQuote() {
+  const allQuotes = getAllQuotes();
+  const randomIndex = Math.floor(Math.random() * allQuotes.length);
+  const randomQuote = allQuotes[randomIndex];
+
+  if (quoteModalText) {
+    quoteModalText.textContent = randomQuote.text;
+  }
+
+  // Show modal after a short delay for better effect
+  setTimeout(() => {
+    if (quoteModalOverlay) {
+      quoteModalOverlay.classList.add('active');
+    }
+  }, 800);
+}
+
+// Close quote modal
+function closeQuoteModal() {
+  if (quoteModalOverlay) {
+    quoteModalOverlay.classList.remove('active');
+  }
+}
+
+// Event listeners for quote modal
+if (quoteModalClose) {
+  quoteModalClose.addEventListener('click', closeQuoteModal);
+}
+
+if (quoteModalOverlay) {
+  quoteModalOverlay.addEventListener('click', (e) => {
+    // Close if clicked on overlay, not the modal itself
+    if (e.target === quoteModalOverlay) {
+      closeQuoteModal();
+    }
+  });
+}
+
 // Initialize app after all functions are defined
 initTabs();
 init();
+showDailyQuote(); // Show random quote on page load
 
