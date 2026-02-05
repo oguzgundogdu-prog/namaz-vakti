@@ -1439,3 +1439,185 @@ setTimeout(() => {
   }
 }, 100);
 
+// ============================================
+// Quote Sharing (Image Generation)
+// ============================================
+
+window.shareQuote = async function (text, author) {
+  showToast('Görsel hazırlanıyor...');
+
+  // Create a temporary container for rendering
+  const container = document.createElement('div');
+  Object.assign(container.style, {
+    position: 'fixed',
+    top: '-9999px',
+    left: '-9999px',
+    width: '1080px',
+    height: '1080px',
+    background: 'linear-gradient(135deg, #0f5156 0%, #1a7178 100%)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '80px',
+    color: '#ffffff',
+    fontFamily: "'Outfit', sans-serif"
+  });
+
+  // Decorative border
+  const border = document.createElement('div');
+  Object.assign(border.style, {
+    position: 'absolute',
+    top: '40px',
+    left: '40px',
+    right: '40px',
+    bottom: '40px',
+    border: '2px solid rgba(255,255,255,0.3)',
+    borderRadius: '30px',
+    pointerEvents: 'none'
+  });
+  container.appendChild(border);
+
+  // Icon
+  const icon = document.createElement('div');
+  icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z"></path></svg>';
+  icon.style.marginBottom = '60px';
+  container.appendChild(icon);
+
+  // Text
+  const textEl = document.createElement('h1');
+  textEl.textContent = text;
+  // Font scaling logic
+  const len = text.length;
+  textEl.style.fontSize = len > 300 ? '36px' : len > 200 ? '42px' : len > 100 ? '54px' : '64px';
+  textEl.style.lineHeight = '1.4';
+  textEl.style.textAlign = 'center';
+  textEl.style.fontWeight = '500';
+  textEl.style.marginBottom = '60px';
+  textEl.style.maxWidth = '900px';
+  textEl.style.textShadow = '0 4px 10px rgba(0,0,0,0.2)';
+  container.appendChild(textEl);
+
+  // Line
+  const line = document.createElement('div');
+  Object.assign(line.style, {
+    width: '120px',
+    height: '4px',
+    background: '#f59e0b',
+    marginBottom: '40px',
+    borderRadius: '2px'
+  });
+  container.appendChild(line);
+
+  // Author
+  const authorEl = document.createElement('p');
+  authorEl.textContent = author;
+  authorEl.style.fontSize = '32px';
+  authorEl.style.fontWeight = '300';
+  authorEl.style.opacity = '0.9';
+  authorEl.style.letterSpacing = '1px';
+  container.appendChild(authorEl);
+
+  // Watermark
+  const footer = document.createElement('div');
+  Object.assign(footer.style, {
+    position: 'absolute',
+    bottom: '50px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    opacity: '0.7',
+    fontSize: '24px'
+  });
+  footer.innerHTML = '<span style="font-size: 28px;">🕌</span> Namaz Vakti';
+  container.appendChild(footer);
+
+  document.body.appendChild(container);
+
+  try {
+    const canvas = await html2canvas(container, {
+      scale: 2,
+      backgroundColor: null,
+      logging: false,
+      useCORS: true
+    });
+
+    canvas.toBlob(async (blob) => {
+      if (!blob) throw new Error('Blob creation failed');
+      const file = new File([blob], 'hikmetli-soz.png', { type: 'image/png' });
+
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'Hikmetli Söz',
+            text: `"${text}" - ${author}`
+          });
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            downloadImage(canvas);
+          }
+        }
+      } else {
+        downloadImage(canvas);
+      }
+
+      document.body.removeChild(container);
+    }, 'image/png');
+
+  } catch (error) {
+    console.error('Generation error:', error);
+    document.body.removeChild(container);
+    // Fallback to clipboard
+    navigator.clipboard.writeText(`"${text}" - ${author}`)
+      .then(() => showToast('Görsel oluşturulamadı, metin kopyalandı.'))
+      .catch(() => showToast('İşlem başarısız.'));
+  }
+};
+
+function downloadImage(canvas) {
+  const link = document.createElement('a');
+  link.download = `hikmetli-soz-${Date.now()}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('Görsel indirildi');
+}
+
+window.copyQuote = function (text, author) {
+  navigator.clipboard.writeText(`"${text}" - ${author}`)
+    .then(() => showToast('Söz kopyalandı'))
+    .catch(console.error);
+};
+
+window.showToast = function (message) {
+  const existing = document.querySelector('.toast-message');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast-message';
+  toast.textContent = message;
+  Object.assign(toast.style, {
+    position: 'fixed',
+    bottom: '24px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    background: '#1e293b',
+    color: '#fff',
+    padding: '12px 24px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+    zIndex: '10000',
+    opacity: '0',
+    transition: 'opacity 0.3s ease'
+  });
+
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.style.opacity = '1');
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+};
+
