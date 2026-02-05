@@ -18,6 +18,17 @@ const SCHOLAR_PHOTOS = [
 
 // Scholar Quotes
 const SCHOLAR_QUOTES = [
+  // Yeni eklenenler (Resim 3)
+  { text: 'Mahmud\'un hasta olduğunu duyarsanız, bir kadın çarşafını çıkarmış da ondandır öyle bilin.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Şu çarşafı çıkaranlar var ya onları duyunca sanki kalbime hançer sokuyorlar gibi oluyorum, devam edenler de yarama ilaç oluyorlar. Ben onlardan razı olduğumdan ziyade, Allâh onlardan razı olsun.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İçimiz de dışımız da İslâm\'a uyacak. Kopuklar nasıl yürüyorsa, öyle yürüyenler var. Çarşaflılar! Şunu unutmayın, bütün çarşaflılar hoca niyeti ile görülüyor.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşafı seçen Mevlâ Teâlâ\'nın rızasını, mantoyu seçen Mevlâ Teâlâ\'nın gazabını seçmiştir. Öyleyse iyi tarafı seçmek lazımdır.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaflı kardeşlerimizden birisi, bir diş doktoruna gitmiş, ertesi gün tekrar gittiğinde çarşaf ile uzaktan yakından alakası olmayan doktor: “Bana bu gece rüyamda şu çarşaftan düşen tozları muhafaza edin, onlar size yardım edecek denildi” demiş.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Allâh-u Teâlâ çarşafın değerini dünyada ortaya çıkarmıyor. Eğer çarşafın ne kadar kıymetli olduğu hakikati gözükse idi, bütün hanımlar illa çarşaf giyeceğiz diye harp ederlerdi, gözükmediği için giyilmemesi için harp ediyorlar.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaf giyinmeyen hanım tehlikelidir, tehlikelidir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir hanım kardeşimiz çarşaf giyse, bütün komşuları ona düşman olur. Ona: “Sadece sen mi cennete gideceksin?!” derler. Sanki o: “Sadece ben cennete gideceğim, hiçbiriniz gidemeyecek!” demiş oluyor. Halbuki öyle mi diyor?! Yok, iftira ediyorsunuz ona, sû-i zan ediyorsunuz, “Kendini beğenmiş” diyorsunuz. Yalan, kendini beğendiği yok, kendini toprak ediyor, toprak.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaf giyenler cahiller tarafından beğenilmez. Ama o: “İsterse beni Allâh yolunda beğenmesinler” diyor, kendini feda ediyor.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaf hakkında çok tenbih edelim, çok tenbih edelim ama hanımların canını yakmayalım. Yarın hakkını alacak senden âhirette. Erkek olarak, eline düştü diye yiyecek misin onu?! Zorun nedir?! Her şey yumuşaklıkla!', author: 'Mahmud Efendi Kuddise Sirruhu' },
   // Yeni eklenenler (Resim 2)
   { text: 'Bu yolda ölmeye geldik, okumaya devam.', author: 'Mahmud Efendi Kuddise Sirruhu' },
   { text: 'Hepinizden memnunum ama ilim okuyanlardan daha çok memnunum.', author: 'Mahmud Efendi Kuddise Sirruhu' },
