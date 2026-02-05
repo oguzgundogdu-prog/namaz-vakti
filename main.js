@@ -940,3 +940,298 @@ initTabs();
 init();
 showDailyQuote(); // Show random quote on page load
 
+// ============================================
+// Qada Prayer Tracking System
+// ============================================
+
+const QADA_STORAGE_KEY = 'qadaPrayerData';
+
+// Default data structure
+const defaultQadaData = {
+  counters: {
+    fajr: 0,
+    dhuhr: 0,
+    asr: 0,
+    maghrib: 0,
+    isha: 0
+  },
+  dailyGoal: 2,
+  today: {
+    date: getCurrentDate(),
+    completed: 0,
+    prayers: []
+  },
+  history: []
+};
+
+// Get current date as YYYY-MM-DD
+function getCurrentDate() {
+  const now = new Date();
+  return now.toISOString().split('T')[0];
+}
+
+// Load qada data from localStorage
+function loadQadaData() {
+  try {
+    const stored = localStorage.getItem(QADA_STORAGE_KEY);
+    if (stored) {
+      const data = JSON.parse(stored);
+      resetDailyIfNeeded(data);
+      return data;
+    }
+  } catch (error) {
+    console.error('Error loading qada data:', error);
+  }
+  return { ...defaultQadaData };
+}
+
+// Save qada data to localStorage
+function saveQadaData(data) {
+  try {
+    localStorage.setItem(QADA_STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving qada data:', error);
+    alert('Veri kaydedilemedi. Tarayıcı hafızası dolu olabilir.');
+  }
+}
+
+// Reset daily progress if new day
+function resetDailyIfNeeded(data) {
+  const today = getCurrentDate();
+  if (data.today.date !== today) {
+    // Save yesterday's data to history
+    if (data.today.completed > 0) {
+      data.history.push({
+        date: data.today.date,
+        completed: data.today.completed,
+        prayers: [...data.today.prayers]
+      });
+
+      // Keep only last 30 days
+      if (data.history.length > 30) {
+        data.history = data.history.slice(-30);
+      }
+    }
+
+    // Reset today
+    data.today = {
+      date: today,
+      completed: 0,
+      prayers: []
+    };
+
+    saveQadaData(data);
+  }
+}
+
+// Initialize qada system
+let qadaData = loadQadaData();
+
+// Increment counter
+function incrementQada(prayer) {
+  if (qadaData.counters[prayer] < 9999) {
+    qadaData.counters[prayer]++;
+    saveQadaData(qadaData);
+    renderQadaCounters();
+  }
+}
+
+// Decrement counter
+function decrementQada(prayer) {
+  if (qadaData.counters[prayer] > 0) {
+    qadaData.counters[prayer]--;
+    saveQadaData(qadaData);
+    renderQadaCounters();
+  }
+}
+
+// Mark prayer as completed today
+function markQadaComplete(prayer) {
+  const btn = document.querySelector(`button[onclick="markQadaComplete('${prayer}')"]`);
+
+  // Check if already completed today
+  const alreadyCompleted = qadaData.today.prayers.includes(prayer);
+
+  if (alreadyCompleted) {
+    // Undo completion
+    qadaData.today.prayers = qadaData.today.prayers.filter(p => p !== prayer);
+    qadaData.today.completed--;
+    qadaData.counters[prayer]++; // Add back to counter
+    btn.classList.remove('completed');
+  } else {
+    // Mark as completed
+    if (qadaData.counters[prayer] > 0) {
+      qadaData.today.prayers.push(prayer);
+      qadaData.today.completed++;
+      qadaData.counters[prayer]--; // Reduce counter
+      btn.classList.add('completed');
+    } else {
+      alert('Bu namazın kaza sayısı sıfır!');
+      return;
+    }
+  }
+
+  saveQadaData(qadaData);
+  renderQadaCounters();
+  renderDailyProgress();
+}
+
+// Calculate total qada
+function calculateTotalQada() {
+  return Object.values(qadaData.counters).reduce((sum, count) => sum + count, 0);
+}
+
+// Get last 7 days stats
+function getLast7DaysStats() {
+  const last7Days = qadaData.history.slice(-7);
+  const total = last7Days.reduce((sum, day) => sum + day.completed, 0);
+  const average = last7Days.length > 0 ? (total / 7).toFixed(1) : 0;
+
+  // Include today if completed any
+  const todayCompleted = qadaData.today.completed;
+  const totalWithToday = total + todayCompleted;
+
+  return {
+    total: totalWithToday,
+    average: ((totalWithToday) / 7).toFixed(1)
+  };
+}
+
+// Render counters
+function renderQadaCounters() {
+  // Update individual counters
+  const prayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+  prayers.forEach(prayer => {
+    const counterEl = document.getElementById(`counter-${prayer}`);
+    if (counterEl) {
+      counterEl.textContent = qadaData.counters[prayer];
+    }
+
+    // Update complete button state
+    const btn = document.querySelector(`button[onclick="markQadaComplete('${prayer}')"]`);
+    if (btn) {
+      if (qadaData.today.prayers.includes(prayer)) {
+        btn.classList.add('completed');
+      } else {
+        btn.classList.remove('completed');
+      }
+    }
+  });
+
+  // Update total
+  const totalEl = document.getElementById('total-qada');
+  if (totalEl) {
+    totalEl.textContent = calculateTotalQada();
+  }
+
+  // Update stats
+  const stats = getLast7DaysStats();
+  const stat7DaysEl = document.getElementById('stat-7days');
+  const statAverageEl = document.getElementById('stat-average');
+
+  if (stat7DaysEl) stat7DaysEl.textContent = stats.total;
+  if (statAverageEl) statAverageEl.textContent = stats.average;
+}
+
+// Render daily progress
+function renderDailyProgress() {
+  const progressText = document.getElementById('today-progress-text');
+  const progressBar = document.getElementById('today-progress-bar');
+
+  const completed = qadaData.today.completed;
+  const goal = qadaData.dailyGoal;
+  const percentage = Math.min((completed / goal) * 100, 100);
+
+  if (progressText) {
+    progressText.textContent = `${completed}/${goal} kaza kılındı`;
+  }
+
+  if (progressBar) {
+    progressBar.style.width = `${percentage}%`;
+  }
+}
+
+// Handle daily goal change
+const dailyGoalSelect = document.getElementById('daily-goal');
+if (dailyGoalSelect) {
+  dailyGoalSelect.value = qadaData.dailyGoal;
+
+  dailyGoalSelect.addEventListener('change', (e) => {
+    qadaData.dailyGoal = parseInt(e.target.value);
+    saveQadaData(qadaData);
+    renderDailyProgress();
+  });
+}
+
+// Export data
+const exportBtn = document.getElementById('export-qada-btn');
+if (exportBtn) {
+  exportBtn.addEventListener('click', () => {
+    const dataStr = JSON.stringify(qadaData, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `kaza_namazlari_${getCurrentDate()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    alert('Yedek dosyası indirildi! ✅');
+  });
+}
+
+// Import data
+const importBtn = document.getElementById('import-qada-btn');
+const importFile = document.getElementById('import-qada-file');
+
+if (importBtn && importFile) {
+  importBtn.addEventListener('click', () => {
+    importFile.click();
+  });
+
+  importFile.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const imported = JSON.parse(event.target.result);
+
+        // Validate data structure
+        if (!imported.counters || !imported.dailyGoal) {
+          throw new Error('Geçersiz dosya formatı');
+        }
+
+        // Confirm import
+        if (confirm('Mevcut veriler silinecek ve yedek yüklenecek. Devam edilsin mi?')) {
+          qadaData = imported;
+          resetDailyIfNeeded(qadaData);
+          saveQadaData(qadaData);
+
+          // Update UI
+          dailyGoalSelect.value = qadaData.dailyGoal;
+          renderQadaCounters();
+          renderDailyProgress();
+
+          alert('Yedek başarıyla yüklendi! ✅');
+        }
+      } catch (error) {
+        console.error('Import error:', error);
+        alert('Geçersiz yedek dosyası! ❌');
+      }
+
+      // Reset file input
+      importFile.value = '';
+    };
+
+    reader.readAsText(file);
+  });
+}
+
+// Initial render
+renderQadaCounters();
+renderDailyProgress();
+
