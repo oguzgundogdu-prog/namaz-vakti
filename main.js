@@ -1552,37 +1552,330 @@ window.shareQuote = async function (text, author) {
       useCORS: true
     });
 
+    document.body.removeChild(container);
+
+    // STEP 2: Show preview modal with fresh gesture buttons
+    showSharePreviewModal(canvas, text, author);
+
+  } catch (error) {
+    console.error('Generation error:', error);
+    document.body.removeChild(container);
+    navigator.clipboard.writeText(`"${text}" - ${author}`)
+      .then(() => showToast('Görsel oluşturulamadı, metin kopyalandı.'))
+      .catch(() => showToast('İşlem başarısız.'));
+  }
+};
+
+// Show preview modal with share/download buttons (2-step UX)
+function showSharePreviewModal(canvas, text, author) {
+  // Create modal overlay
+  const modal = document.createElement('div');
+  Object.assign(modal.style, {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    background: 'rgba(0, 0, 0, 0.85)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: '99999',
+    padding: '20px',
+    opacity: '0',
+    transition: 'opacity 0.3s ease'
+  });
+
+  // Preview image
+  const preview = document.createElement('img');
+  preview.src = canvas.toDataURL('image/jpeg', 0.95);
+  Object.assign(preview.style, {
+    maxWidth: '90%',
+    maxHeight: '60vh',
+    borderRadius: '16px',
+    boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+    marginBottom: '30px'
+  });
+
+  // Success message
+  const message = document.createElement('div');
+  message.textContent = '✨ Görsel hazırlandı!';
+  Object.assign(message.style, {
+    color: '#fff',
+    fontSize: '20px',
+    fontWeight: '600',
+    marginBottom: '20px',
+    textAlign: 'center'
+  });
+
+  // Button container
+  const buttonContainer = document.createElement('div');
+  Object.assign(buttonContainer.style, {
+    display: 'flex',
+    gap: '15px',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
+  });
+
+  // Share button (FRESH GESTURE)
+  const shareBtn = document.createElement('button');
+  shareBtn.innerHTML = '📤 Paylaş';
+  Object.assign(shareBtn.style, {
+    padding: '14px 32px',
+    fontSize: '16px',
+    fontWeight: '600',
+    background: 'linear-gradient(135deg, #0f5156 0%, #1a7178 100%)',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '12px',
+    cursor: 'pointer',
+    boxShadow: '0 4px 12px rgba(15,81,86,0.4)',
+    transition: 'transform 0.2s, box-shadow 0.2s'
+  });
+
+  shareBtn.onclick = async () => {
     canvas.toBlob(async (blob) => {
-      if (!blob) throw new Error('Blob creation failed');
-      const file = new File([blob], 'hikmetli-soz.png', { type: 'image/png' });
+      if (!blob) {
+        showToast('Hata oluştu');
+        modal.remove();
+        return;
+      }
+
+      const filename = `hikmetli-soz-${Date.now()}.jpg`;
+      const file = new File([blob], filename, { type: 'image/jpeg', lastModified: Date.now() });
 
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
             files: [file],
             title: 'Hikmetli Söz'
-            // Text removed for better mobile compatibility (prevents download fallback on some devices)
           });
+          modal.remove();
         } catch (err) {
           if (err.name !== 'AbortError') {
+            console.error('Share failed:', err);
+            showToast('Paylaşım başarısız, indiriliyor...');
             downloadImage(canvas);
+            modal.remove();
           }
         }
       } else {
+        showToast('Paylaşım desteklenmiyor, indiriliyor...');
         downloadImage(canvas);
+        modal.remove();
       }
+    }, 'image/jpeg', 0.95);
+  };
 
-      document.body.removeChild(container);
-    }, 'image/png');
+  shareBtn.onmouseenter = () => {
+    shareBtn.style.transform = 'translateY(-2px)';
+    shareBtn.style.boxShadow = '0 6px 20px rgba(15,81,86,0.6)';
+  };
+  shareBtn.onmouseleave = () => {
+    shareBtn.style.transform = 'translateY(0)';
+    shareBtn.style.boxShadow = '0 4px 12px rgba(15,81,86,0.4)';
+  };
 
-  } catch (error) {
-    console.error('Generation error:', error);
+  // Download button
+  const downloadBtn = document.createElement('button');
+  downloadBtn.innerHTML = '💾 İndir';
+  Object.assign(downloadBtn.style, {
+    padding: '14px 32px',
+    fontSize: '16px',
+    fontWeight: '600',
+    background: '#374151',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '12px',
+    cursor: 'pointer',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+    transition: 'transform 0.2s, box-shadow 0.2s'
+  });
+
+  downloadBtn.onclick = () => {
+    downloadImage(canvas);
+    modal.remove();
+  };
+
+  downloadBtn.onmouseenter = () => {
+    downloadBtn.style.transform = 'translateY(-2px)';
+    downloadBtn.style.boxShadow = '0 6px 20px rgba(0,0,0,0.5)';
+  };
+  downloadBtn.onmouseleave = () => {
+    downloadBtn.style.transform = 'translateY(0)';
+    downloadBtn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+  };
+
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '✕';
+  Object.assign(closeBtn.style, {
+    position: 'absolute',
+    top: '20px',
+    right: '20px',
+    padding: '10px 16px',
+    fontSize: '24px',
+    background: 'transparent',
+    color: '#fff',
+    border: 'none',
+    cursor: 'pointer',
+    opacity: '0.7',
+    transition: 'opacity 0.2s'
+  });
+
+  closeBtn.onclick = () => modal.remove();
+  closeBtn.onmouseenter = () => closeBtn.style.opacity = '1';
+  closeBtn.onmouseleave = () => closeBtn.style.opacity = '0.7';
+
+  // Assemble modal
+  buttonContainer.appendChild(shareBtn);
+  buttonContainer.appendChild(downloadBtn);
+  modal.appendChild(closeBtn);
+  modal.appendChild(preview);
+  modal.appendChild(message);
+  modal.appendChild(buttonContainer);
+
+  document.body.appendChild(modal);
+
+  // Fade in
+  requestAnimationFrame(() => modal.style.opacity = '1');
+
+  // Close on backdrop click
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+}
+
+showToast('Görsel hazırlanıyor...');
+
+// Create a temporary container for rendering
+const container = document.createElement('div');
+Object.assign(container.style, {
+  position: 'fixed',
+  top: '-9999px',
+  left: '-9999px',
+  width: '1080px',
+  height: '1080px',
+  background: 'linear-gradient(135deg, #0f5156 0%, #1a7178 100%)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '80px',
+  color: '#ffffff',
+  fontFamily: "'Outfit', sans-serif"
+});
+
+// Decorative border
+const border = document.createElement('div');
+Object.assign(border.style, {
+  position: 'absolute',
+  top: '40px',
+  left: '40px',
+  right: '40px',
+  bottom: '40px',
+  border: '2px solid rgba(255,255,255,0.3)',
+  borderRadius: '30px',
+  pointerEvents: 'none'
+});
+container.appendChild(border);
+
+// Icon
+const icon = document.createElement('div');
+icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z"></path></svg>';
+icon.style.marginBottom = '60px';
+container.appendChild(icon);
+
+// Text
+const textEl = document.createElement('h1');
+textEl.textContent = text;
+// Font scaling logic
+const len = text.length;
+textEl.style.fontSize = len > 300 ? '36px' : len > 200 ? '42px' : len > 100 ? '54px' : '64px';
+textEl.style.lineHeight = '1.4';
+textEl.style.textAlign = 'center';
+textEl.style.fontWeight = '500';
+textEl.style.marginBottom = '60px';
+textEl.style.maxWidth = '900px';
+textEl.style.textShadow = '0 4px 10px rgba(0,0,0,0.2)';
+container.appendChild(textEl);
+
+// Line
+const line = document.createElement('div');
+Object.assign(line.style, {
+  width: '120px',
+  height: '4px',
+  background: '#f59e0b',
+  marginBottom: '40px',
+  borderRadius: '2px'
+});
+container.appendChild(line);
+
+// Author
+const authorEl = document.createElement('p');
+authorEl.textContent = author;
+authorEl.style.fontSize = '32px';
+authorEl.style.fontWeight = '300';
+authorEl.style.opacity = '0.9';
+authorEl.style.letterSpacing = '1px';
+container.appendChild(authorEl);
+
+// Watermark
+const footer = document.createElement('div');
+Object.assign(footer.style, {
+  position: 'absolute',
+  bottom: '50px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  opacity: '0.7',
+  fontSize: '24px'
+});
+footer.innerHTML = '<span style="font-size: 28px;">🕌</span> Namaz Vakti';
+container.appendChild(footer);
+
+document.body.appendChild(container);
+
+try {
+  const canvas = await html2canvas(container, {
+    scale: 2,
+    backgroundColor: null,
+    logging: false,
+    useCORS: true
+  });
+
+  canvas.toBlob(async (blob) => {
+    if (!blob) throw new Error('Blob creation failed');
+    const file = new File([blob], 'hikmetli-soz.png', { type: 'image/png' });
+
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: 'Hikmetli Söz'
+          // Text removed for better mobile compatibility (prevents download fallback on some devices)
+        });
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          downloadImage(canvas);
+        }
+      }
+    } else {
+      downloadImage(canvas);
+    }
+
     document.body.removeChild(container);
-    // Fallback to clipboard
-    navigator.clipboard.writeText(`"${text}" - ${author}`)
-      .then(() => showToast('Görsel oluşturulamadı, metin kopyalandı.'))
-      .catch(() => showToast('İşlem başarısız.'));
-  }
+  }, 'image/png');
+
+} catch (error) {
+  console.error('Generation error:', error);
+  document.body.removeChild(container);
+  // Fallback to clipboard
+  navigator.clipboard.writeText(`"${text}" - ${author}`)
+    .then(() => showToast('Görsel oluşturulamadı, metin kopyalandı.'))
+    .catch(() => showToast('İşlem başarısız.'));
+}
 };
 
 function downloadImage(canvas) {
