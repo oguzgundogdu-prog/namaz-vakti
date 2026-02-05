@@ -12,8 +12,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/namaz-vakti/assets/index-BplgD9CZ.js"></script>
-  <link rel="stylesheet" crossorigin href="/namaz-vakti/assets/index-B_7uDLtZ.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script type="module" crossorigin src="/namaz-vakti/assets/index-Bg8Chh15.js"></script>
+  <link rel="stylesheet" crossorigin href="/namaz-vakti/assets/index-BFWfKmcU.css">
 </head>
 
 <body>
@@ -195,12 +196,12 @@
         <!-- Prayer Counters -->
         <div class="qada-counters">
           <div class="qada-counter-item">
-            <span class="prayer-label">İmsak</span>
+            <span class="prayer-label">Sabah</span>
             <div class="counter-controls">
-              <button class="counter-btn" onclick="decrementQada('fajr')">−</button>
+              <button class="counter-btn" data-prayer="fajr" data-action="decrement">−</button>
               <span class="counter-value" id="counter-fajr">0</span>
-              <button class="counter-btn" onclick="incrementQada('fajr')">+</button>
-              <button class="complete-btn" onclick="markQadaComplete('fajr')" title="Bugün kılındı">
+              <button class="counter-btn" data-prayer="fajr" data-action="increment">+</button>
+              <button class="complete-btn" data-prayer="fajr" data-action="complete" title="Bugün kılındı">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
@@ -212,10 +213,10 @@
           <div class="qada-counter-item">
             <span class="prayer-label">Öğle</span>
             <div class="counter-controls">
-              <button class="counter-btn" onclick="decrementQada('dhuhr')">−</button>
+              <button class="counter-btn" data-prayer="dhuhr" data-action="decrement">−</button>
               <span class="counter-value" id="counter-dhuhr">0</span>
-              <button class="counter-btn" onclick="incrementQada('dhuhr')">+</button>
-              <button class="complete-btn" onclick="markQadaComplete('dhuhr')" title="Bugün kılındı">
+              <button class="counter-btn" data-prayer="dhuhr" data-action="increment">+</button>
+              <button class="complete-btn" data-prayer="dhuhr" data-action="complete" title="Bugün kılındı">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
@@ -227,10 +228,10 @@
           <div class="qada-counter-item">
             <span class="prayer-label">İkindi</span>
             <div class="counter-controls">
-              <button class="counter-btn" onclick="decrementQada('asr')">−</button>
+              <button class="counter-btn" data-prayer="asr" data-action="decrement">−</button>
               <span class="counter-value" id="counter-asr">0</span>
-              <button class="counter-btn" onclick="incrementQada('asr')">+</button>
-              <button class="complete-btn" onclick="markQadaComplete('asr')" title="Bugün kılındı">
+              <button class="counter-btn" data-prayer="asr" data-action="increment">+</button>
+              <button class="complete-btn" data-prayer="asr" data-action="complete" title="Bugün kılındı">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
@@ -242,10 +243,10 @@
           <div class="qada-counter-item">
             <span class="prayer-label">Akşam</span>
             <div class="counter-controls">
-              <button class="counter-btn" onclick="decrementQada('maghrib')">−</button>
+              <button class="counter-btn" data-prayer="maghrib" data-action="decrement">−</button>
               <span class="counter-value" id="counter-maghrib">0</span>
-              <button class="counter-btn" onclick="incrementQada('maghrib')">+</button>
-              <button class="complete-btn" onclick="markQadaComplete('maghrib')" title="Bugün kılındı">
+              <button class="counter-btn" data-prayer="maghrib" data-action="increment">+</button>
+              <button class="complete-btn" data-prayer="maghrib" data-action="complete" title="Bugün kılındı">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
@@ -257,10 +258,10 @@
           <div class="qada-counter-item">
             <span class="prayer-label">Yatsı</span>
             <div class="counter-controls">
-              <button class="counter-btn" onclick="decrementQada('isha')">−</button>
+              <button class="counter-btn" data-prayer="isha" data-action="decrement">−</button>
               <span class="counter-value" id="counter-isha">0</span>
-              <button class="counter-btn" onclick="incrementQada('isha')">+</button>
-              <button class="complete-btn" onclick="markQadaComplete('isha')" title="Bugün kılındı">
+              <button class="counter-btn" data-prayer="isha" data-action="increment">+</button>
+              <button class="complete-btn" data-prayer="isha" data-action="complete" title="Bugün kılındı">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
@@ -285,9 +286,27 @@
             <div class="stat-unit">kaza kılındı</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Ortalama</div>
+            <div class="stat-label">Son 30 Gün</div>
+            <div class="stat-value" id="stat-30days">0</div>
+            <div class="stat-unit">kaza kılındı</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">7 Gün Ort.</div>
             <div class="stat-value" id="stat-average">0</div>
             <div class="stat-unit">kaza/gün</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">En İyi Gün</div>
+            <div class="stat-value" id="stat-best">0</div>
+            <div class="stat-unit">kaza</div>
+          </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="qada-chart-section">
+          <h3 class="chart-title">Son 30 Gün İlerlemesi</h3>
+          <div class="chart-container">
+            <canvas id="qadaChart"></canvas>
           </div>
         </div>
 
