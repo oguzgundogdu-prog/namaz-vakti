@@ -18,6 +18,27 @@ const SCHOLAR_PHOTOS = [
 
 // Scholar Quotes
 const SCHOLAR_QUOTES = [
+  // Yeni eklenenler (Resim 5)
+  { text: 'Asıl insanları kurtaracak, insanları büyük şereflere ulaştıracak bu Kur\'ân-ı Azîmüşşan\'dır. İnsan: “Ben bunu almadan âhirete gitmeyeceğim, ben bunu anlamadan bunun sahibinin huzuruna çıkmayacağım” demelidir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Soruyorum onlara: “En büyük kim?” diye: “Allâh-u Teâlâ” diyolar, “En büyük kitap hangisi?” deyince: “Kur\'ân-ı Kerîm” diyorlar. “En büyük insan kim?” dediğimde ise onu söyleyemiyorlar, korkuyorlar söylemeye. Tabî ki Allâh-u Teâlâ\'nın gönderdiği Kur\'ân-ı Kerîm\'i okuyan kişidir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Avrupalılar ve Amerikalılar diyorlar ki: “Türkler Kur\'ân\'a ve mürşidlere inandıkları için illa bizi yeniyorlar. Türkleri bundan uzaklaştıralım, o zaman onlar sarhoş gibi olurlar.” Böylece onlar bizi Kur\'ân\'dan ayırdılar. Şimdi hep geriye gidiyoruz. Önceden Viyana\'ya kadar ilerleyen bizler, şimdi geriye gidiyoruz. Onlar bizim ilerlememizin Kur\'ân\'la olduğunu biliyorlar. Biz ise bilmiyoruz, çok cahil kalmışız.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bugün besmelesiz, nursuz, feyizsiz kitapları okursun ama Kur\'ân bulunduğu yerden sana sesleniyor: “Bana bak” diye. Sen ise ona: “Benim işim var, Yunan felsefesine bakacağım” diyorsun. Tekrar Kur\'ân sana diyor ki: “Ben kimden geldim biliyor musun?” Sen de: “Kur\'ân! Hele sen dur yerinde, ben şimdi sana bakamam” diyorsun. Kur\'ân yine sesleniyor: “Benim içimde ne var biliyor musun?” Sen yine Kur\'ân\'ın tarafına bakmıyorsun. Sen Kur\'ân-ı terk edip ona bakmıyorsun, o da âhirette senin tarafına bakmayacak.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bana gelip: “Hoca efendi Kur\'ân-ı Kerîm\'i hatmettim, duasını eder misin?” diyorlar. Peki, hatmettiler fakat hangi âyetini anladılar acaba?! Efendi Babam (Kuddise Sirruhû): “Bir âyetin manasını öğrenmek kadar güzel şey yoktur” derdi. Cemaat-i Müslimîn! Bu ihtarlardan sonra âyetin manasını düşüneceğiz inşâallâh, neden dayak cennetten çıktı, dayak yemeyen pek adam olamaz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  // Yeni eklenenler (Resim 4)
+  { text: 'İç karışıklıklar günden güne alevleniyor. Türkiye\'ye eğer bir şey olmuyorsa sizin çarşaflarınız yüzünden! Ama severek giyeceksiniz. Bazıları var: “Bir yasak olsaydı da çıkarsaydık” derler.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir gâvura bir milyar versen çarşaf giymez, bizim Müslümanlar ise bir milyar verip gâvurun mantosunu giyiyorlar.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Millete beğenilmeye çalışmayalım. Çarşafı kale yapıp içine giren mahfuzdur.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaf aşksız, muhabbetsiz giyilmez.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaf giyen Allâh\'ın pehlivan kuludur.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir hanıma İstanbul\'u versem çarşaf giyemez ama giyince de çıkarmaz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Sakala razı olmazmış, çarşafa, örtünmeye razı olmazmış. Sen bilirsin! Nazlılık devirleri geçer bir gün. Ey insan! Âyetlerden ders al ders. Kütük olma, sallan biraz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Hanımlara: “Çarşafla örtününüz, elbiseleriniz ermeni entarisi gibi olmasın” denildi. Ne demeli? Peki.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Vücudunuzdan derileriniz yolunsa (soyulsa) yine de çıkarmayacaksınız.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir çarşaf bütün dünyaya bedeldir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Sen çarşafınla beraber berberden yeni çıkmış en süslü hanımdan daha güzelsin.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Her şeyin bir nişanı vardır. Çarşaf da İslâm\'ın nişanıdır.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaflı eğer çarşafın kıymetini bilirse cihan ona dokunamaz, dokunsa cihan yıkılır.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaf giyen kişi belki nice insanların gözünden düşer. Onların gözünden düşer ama evliyâullâhın gözüne girer. Tavuk kümesinden çıkar ve daimî saraya girer.', author: 'Mahmud Efendi Kuddise Sirruhu' },
   // Yeni eklenenler (Resim 3)
   { text: 'Mahmud\'un hasta olduğunu duyarsanız, bir kadın çarşafını çıkarmış da ondandır öyle bilin.', author: 'Mahmud Efendi Kuddise Sirruhu' },
   { text: 'Şu çarşafı çıkaranlar var ya onları duyunca sanki kalbime hançer sokuyorlar gibi oluyorum, devam edenler de yarama ilaç oluyorlar. Ben onlardan razı olduğumdan ziyade, Allâh onlardan razı olsun.', author: 'Mahmud Efendi Kuddise Sirruhu' },
@@ -879,6 +900,16 @@ function showDailyQuote() {
     quoteModalText.textContent = randomQuote.text;
   }
 
+  // Bind share button
+  const shareBtn = document.getElementById('modal-share-btn');
+  if (shareBtn) {
+    // Remove old listeners by cloning or just setting onclick (simpler)
+    shareBtn.onclick = (e) => {
+      e.stopPropagation(); // Prevent modal close
+      shareQuote(randomQuote.text, randomQuote.author);
+    };
+  }
+
   // Show modal after a short delay for better effect
   setTimeout(() => {
     if (quoteModalOverlay) {
@@ -1523,21 +1554,18 @@ window.shareQuote = async function (text, author) {
 
     canvas.toBlob(async (blob) => {
       if (!blob) throw new Error('Blob creation failed');
-
-      const filename = `hikmetli-soz-${Date.now()}.jpg`;
-      const file = new File([blob], filename, { type: 'image/jpeg', lastModified: Date.now() });
+      const file = new File([blob], 'hikmetli-soz.png', { type: 'image/png' });
 
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
             files: [file],
             title: 'Hikmetli Söz'
+            // Text removed for better mobile compatibility (prevents download fallback on some devices)
           });
         } catch (err) {
           if (err.name !== 'AbortError') {
-            console.error('Share failed:', err);
-            showToast('Paylaşım menüsü açılamadı, görsel indiriliyor.');
-            setTimeout(() => downloadImage(canvas), 1500);
+            downloadImage(canvas);
           }
         }
       } else {
@@ -1545,11 +1573,12 @@ window.shareQuote = async function (text, author) {
       }
 
       document.body.removeChild(container);
-    }, 'image/jpeg', 0.95);
+    }, 'image/png');
 
   } catch (error) {
     console.error('Generation error:', error);
     document.body.removeChild(container);
+    // Fallback to clipboard
     navigator.clipboard.writeText(`"${text}" - ${author}`)
       .then(() => showToast('Görsel oluşturulamadı, metin kopyalandı.'))
       .catch(() => showToast('İşlem başarısız.'));
