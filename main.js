@@ -1578,11 +1578,48 @@ window.shareQuote = async function (text, author) {
 
       document.body.removeChild(container);
     }, 'image/jpeg', 0.95);
-  } catch (err) {
-    if (err.name !== 'AbortError') {
-      downloadImage(canvas);
-    }
+
+  } catch (error) {
+    console.error('Generation error:', error);
+    document.body.removeChild(container);
+    // Fallback to clipboard
+    navigator.clipboard.writeText(`"${text}" - ${author}`)
+      .then(() => showToast('Görsel oluşturulamadı, metin kopyalandı.'))
+      .catch(() => showToast('İşlem başarısız.'));
   }
+};
+
+canvas.toBlob(async (blob) => {
+  if (!blob) throw new Error('Blob creation failed');
+  // Use JPEG for better compatibility and smaller size
+  const file = new File([blob], 'hikmetli-soz.jpg', { type: 'image/jpeg', lastModified: Date.now() });
+
+  // Check if Web Share API is fully supported
+  if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        files: [file],
+        title: 'Hikmetli Söz'
+      });
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Share failed:', err);
+        // Show toast before downloading to explain
+        showToast('Paylaşım menüsü açılamadı, görsel indiriliyor.');
+        setTimeout(() => downloadImage(canvas), 1500);
+      }
+    }
+  } else {
+    downloadImage(canvas);
+  }
+
+  document.body.removeChild(container);
+}, 'image/jpeg', 0.95);
+  } catch (err) {
+  if (err.name !== 'AbortError') {
+    downloadImage(canvas);
+  }
+}
 } else {
   downloadImage(canvas);
 }
