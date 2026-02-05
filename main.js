@@ -900,6 +900,16 @@ function showDailyQuote() {
     quoteModalText.textContent = randomQuote.text;
   }
 
+  // Bind share button
+  const shareBtn = document.getElementById('modal-share-btn');
+  if (shareBtn) {
+    // Remove old listeners by cloning or just setting onclick (simpler)
+    shareBtn.onclick = (e) => {
+      e.stopPropagation(); // Prevent modal close
+      shareQuote(randomQuote.text, randomQuote.author);
+    };
+  }
+
   // Show modal after a short delay for better effect
   setTimeout(() => {
     if (quoteModalOverlay) {
@@ -1550,8 +1560,8 @@ window.shareQuote = async function (text, author) {
         try {
           await navigator.share({
             files: [file],
-            title: 'Hikmetli Söz',
-            text: `"${text}" - ${author}`
+            title: 'Hikmetli Söz'
+            // Text removed for better mobile compatibility (prevents download fallback on some devices)
           });
         } catch (err) {
           if (err.name !== 'AbortError') {
