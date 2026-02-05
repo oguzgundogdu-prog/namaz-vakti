@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/namaz-vakti/assets/index-GcqUYae4.js"></script>
-  <link rel="stylesheet" crossorigin href="/namaz-vakti/assets/index-DHLmGbG-.css">
+  <script type="module" crossorigin src="/namaz-vakti/assets/index-BplgD9CZ.js"></script>
+  <link rel="stylesheet" crossorigin href="/namaz-vakti/assets/index-B_7uDLtZ.css">
 </head>
 
 <body>
@@ -116,6 +116,7 @@
     <div class="sidebar-tabs">
       <button class="sidebar-tab-btn active" data-sidebar-tab="imsakiye">İmsakiye</button>
       <button class="sidebar-tab-btn" data-sidebar-tab="quotes">Hikmetli Sözler</button>
+      <button class="sidebar-tab-btn" data-sidebar-tab="qada">Kaza Namazları</button>
     </div>
 
     <!-- Sidebar Content -->
@@ -161,6 +162,156 @@
       <div class="sidebar-tab-content" id="quotes-content">
         <div class="quotes-list" id="quotes-list">
           <!-- Quotes will be inserted here -->
+        </div>
+      </div>
+
+      <!-- Kaza Namazları Tab -->
+      <div class="sidebar-tab-content" id="qada-content">
+        <!-- Daily Goal -->
+        <div class="qada-goal-section">
+          <label for="daily-goal">Günlük Hedef:</label>
+          <select id="daily-goal" class="goal-select">
+            <option value="1">1 kaza/gün</option>
+            <option value="2" selected>2 kaza/gün</option>
+            <option value="3">3 kaza/gün</option>
+            <option value="4">4 kaza/gün</option>
+            <option value="5">5 kaza/gün</option>
+            <option value="10">10 kaza/gün</option>
+            <option value="20">20 kaza/gün</option>
+          </select>
+        </div>
+
+        <!-- Today's Progress -->
+        <div class="qada-progress-section">
+          <div class="progress-header">
+            <span class="progress-label">Bugün:</span>
+            <span class="progress-text" id="today-progress-text">0/2 kaza kılındı</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="today-progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- Prayer Counters -->
+        <div class="qada-counters">
+          <div class="qada-counter-item">
+            <span class="prayer-label">İmsak</span>
+            <div class="counter-controls">
+              <button class="counter-btn" onclick="decrementQada('fajr')">−</button>
+              <span class="counter-value" id="counter-fajr">0</span>
+              <button class="counter-btn" onclick="incrementQada('fajr')">+</button>
+              <button class="complete-btn" onclick="markQadaComplete('fajr')" title="Bugün kılındı">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="qada-counter-item">
+            <span class="prayer-label">Öğle</span>
+            <div class="counter-controls">
+              <button class="counter-btn" onclick="decrementQada('dhuhr')">−</button>
+              <span class="counter-value" id="counter-dhuhr">0</span>
+              <button class="counter-btn" onclick="incrementQada('dhuhr')">+</button>
+              <button class="complete-btn" onclick="markQadaComplete('dhuhr')" title="Bugün kılındı">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="qada-counter-item">
+            <span class="prayer-label">İkindi</span>
+            <div class="counter-controls">
+              <button class="counter-btn" onclick="decrementQada('asr')">−</button>
+              <span class="counter-value" id="counter-asr">0</span>
+              <button class="counter-btn" onclick="incrementQada('asr')">+</button>
+              <button class="complete-btn" onclick="markQadaComplete('asr')" title="Bugün kılındı">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="qada-counter-item">
+            <span class="prayer-label">Akşam</span>
+            <div class="counter-controls">
+              <button class="counter-btn" onclick="decrementQada('maghrib')">−</button>
+              <span class="counter-value" id="counter-maghrib">0</span>
+              <button class="counter-btn" onclick="incrementQada('maghrib')">+</button>
+              <button class="complete-btn" onclick="markQadaComplete('maghrib')" title="Bugün kılındı">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="qada-counter-item">
+            <span class="prayer-label">Yatsı</span>
+            <div class="counter-controls">
+              <button class="counter-btn" onclick="decrementQada('isha')">−</button>
+              <span class="counter-value" id="counter-isha">0</span>
+              <button class="counter-btn" onclick="incrementQada('isha')">+</button>
+              <button class="complete-btn" onclick="markQadaComplete('isha')" title="Bugün kılındı">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Counter -->
+        <div class="qada-total">
+          <span class="total-label">Toplam:</span>
+          <span class="total-value" id="total-qada">0</span>
+          <span class="total-unit">Kaza Namazı</span>
+        </div>
+
+        <!-- Statistics -->
+        <div class="qada-stats">
+          <div class="stat-card">
+            <div class="stat-label">Son 7 Gün</div>
+            <div class="stat-value" id="stat-7days">0</div>
+            <div class="stat-unit">kaza kılındı</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Ortalama</div>
+            <div class="stat-value" id="stat-average">0</div>
+            <div class="stat-unit">kaza/gün</div>
+          </div>
+        </div>
+
+        <!-- Backup Buttons -->
+        <div class="qada-backup">
+          <button class="backup-btn" id="export-qada-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Yedek Al
+          </button>
+          <button class="backup-btn" id="import-qada-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Yedek Yükle
+          </button>
+          <input type="file" id="import-qada-file" accept=".json" style="display:none;">
         </div>
       </div>
     </div>
