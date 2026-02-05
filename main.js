@@ -19,7 +19,8 @@ const SCHOLAR_PHOTOS = [
 // Function to set random scholar photo
 function setRandomScholarPhoto() {
   const randomIndex = Math.floor(Math.random() * SCHOLAR_PHOTOS.length);
-  const photoPath = SCHOLAR_PHOTOS[randomIndex];
+  // Add timestamp to prevent caching
+  const photoPath = SCHOLAR_PHOTOS[randomIndex] + '?v=' + new Date().getTime();
   const portraitImg = document.querySelector('.portrait-frame img');
 
   if (portraitImg) {
