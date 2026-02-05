@@ -16,6 +16,61 @@ const SCHOLAR_PHOTOS = [
   '/namaz-vakti/assets/scholar-5.jpg'
 ];
 
+// Scholar Quotes
+const SCHOLAR_QUOTES = [
+  // Yeni eklenenler
+  { text: 'Namazı vaktinde cemaatle kılalım, ondan sonra tesbihinizi çekeceksiniz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Yumurtanız burada beş kuruş, Beykoz\'da yirmi beş kuruş olsa, yemin ederim Beykoz\'da satarsınız. Peki namazı nasıl evde (kılar da ucuza) satarsın.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Dünya senin esirin olsun, niye sen onun esiri oluyorsun?! Sen ona bin, o sana niye biniyor?! Namazını cemaatle kıldıysan sen ona bindin. Malının zekatını verdiysen sen ona bindin.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Cemaatsiz kılınan namaz nâkıstır.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Cemaatle bir vakit namaz kılmayı kaçırsanız, kalbinize o miktar katılık gelir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir zamanlar Rus hükümeti Müslümanlara: “Camilerde görev yapan imamlara maaş veriyoruz, siz ise namaz kılmaya gitmiyorsunuz, gelin namazlarınızı camide kılın! Eğer gelmezseniz camilerinizi ibadete kapatırız” diyerek ihtarda bulundu. Lakin bu ihtara da kulak verilmedi, sonunda bütün camiler kapatıldı. Mescid-i Aksâ bugün kimlerin elindedir? Yahudilerin. Neden? Çünkü orada bulunan Müslümanların büyük bir çoğunluğu Mescid-i Aksâ’ya namaza gitmiyorlardı da ondan. Ancak başka ülkelerden ziyaret maksadıyla gelen bir kaç Müslüman orada namaz kılardı, Mevlâ Teâlâ da ceza kabilinden Müslümanların elinden Mescid-i Aksâ’yı aldı. İslâm’ı hayatlarına tatbik etmekten üşenen kavim, Bosna Hersek’in belasına uğrar. Medreselerde öyle talebeler hocalar var ki sarf, nahiv, tefsir, hadis okuyor, okutuyor fakat namaz kılmıyor, bu olur mu hiç?!', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Ezan-ı şerîf Allâh (Celle Celâlühü)nün davetiyesidir. Câmiye gelince icabet olur, câmiye gelmedin, evde de kılmadın peki nasıl cenneti istiyorsun?! Medreseye hiç gelmedin! Çok güzel olan cennet, çok güzel para ister.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Dükkanı kapatmayalım ama namazları camide cemaatle kılalım.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Seve seve şeriatı yaşayalım. Şeriatın mühim meselelerindendir namazı camide cemaatle kılmak.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+
+  // Mevcutlar (Güncellenmiş isimle)
+  { text: 'Gelirsiniz ver bana tarikat, sonra bırakırsınız, namaza başlar, bırakırsınız, çarşafı giyer, çıkarırsınız.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Şalvar giymekten utanırsınız, sakal, cübbe, çarşaf, uzun entari, bakın İslam kıyafetidir bu. Sen bunları giymekle "ben Müslüman\'ım, benim sağlığımda islamiyete kimse yan bakamaz" demek istiyorsun.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaflarınızı muhafaza ediyorsunuz Elhamdülillah, ama bilmiyorum entarileriniz nasıldır?', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Kadınların şerefi gizli kalmalarında ve erkeklerle görüşmemelerindedir. Kadın çalışacak diye tutturmuş, sonra aç kalırlarmış. Sen karışmasana, o Allahu Teala yarattığının rızkını verir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Sizin çarşafınız bizim sarığımız, şalvarımız, sizi gören alacağını alıyor, birde tatlı sözlen konuşursan onunla, tamam.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Dilenci at üstünde gelse vereceksin, şüpheleniyorsan az ver, şüphelenmiyorsan çok ver.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Aklı başında olan adamın evinde televizyon olmaz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'En büyük günah sorulursa, nedir? Kafirlere meyletmektir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Karınca bacağı kadar olsa bile ekmek atmayın, bu bizi helak eder.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Televizyon hiç Mevla\'yı hatırlatır mı? Zehir zakkum akıtıyor.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Ruh ile beden bir olmazsa bir milyon kere Allah (c.c) desen boş.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşaf giymekle büyük yiğitlik yapıyorsunuz, milletin tesettüre heves etmesine sebep oluyorsunuz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Çarşafınızı iyi muhafaza edin. Şunu yakinen bilin ki; bir çarşafı, bir sarığı bozmakla Çeçenistan\'a gelen belayı bize de verebilir Cenab-ı hak.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Can vermeli çarşaftan vazgeçmemeli, ne güzel şeydir o.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bu çarşafı giyen hanımlar, bilseler onların sayesinde neler oluyor, yatarken de giyerler. Siz ki Allah için tesettürünüzü muhafaza ettiniz O da sizi muhafaza eder.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir Hoca yüzbin televizyondan daha tesirlidir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Rabıta muhabbetle olur, muhabbette ittiba ile olur. İttiba edersen seversin ve sevilirsin.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Mektubattan uzak kalındığı an feyiz kesilir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Sarığı kabul etmeyenin Peygamberimiz (s.a.v.), Cebrail (a.s.), Allah-u Teala (c.c.)\'de kabul etmiyor.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Dünya içinde herşey melundur, fakat zikrullah ile meşgul olan emri bil maruf nehy-i anil münker yapan okuyan ve okutan değildir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Avrupa modasına uymak, namazı terk etmekten daha ağır geliyor.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Televizyon seyreden dinini sevmiyor demektir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir kimse asılacağından korktuğu gibi imandan küfre döneceğinden de öyle korkacak.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Sen nefsini hak ile meşgul etmezsen, nefis seni batıl ile meşgul eder.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir kimse emri bil maruf yapacağım diye yola çıksa sonra siyasetten bahsetse, onun azabını kimse ölçemez.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Dünya sevgisi insanı şaraptan daha sarhoş eder ve ateşe girmeye cesaret verir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Kalın kafalı nefse uyarsan her yerde rezilsin.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İnsan bir nefes sağ olsa çok ilerler.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bütün haramlar nefse dostluk, Mevla\'ya (c.c.) düşmanlıktır.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Gezdiğimiz yerlerde talebe var, medrese yapacak para yok. Milyarlar gidiyor başka yerlere ama medreseye para yok. Bunların hepsi ahirette acısını çekecek.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İlim, amel, ihlas. Üçü bir arada olsun, bunları cemet, dünyayı fethedersin.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İnsanlar et gibi, ulemâ tuz gibidir. Tuzsuz et koktuğu gibi, ulemâdan ve onların sohbetinden mahrum kalanlar da kokar.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Ey talebeler! Sizler kurumuş toprakların yağmur yüklü bulutlarısınız. Direksiz kubbelerin direklerisiniz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bugünkü tahsil ölümden ötesini haber vermiyor. Buna siz nasıl yüksek tahsil dersiniz?', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir adam bir kişiye Kur\'ân okutsa bütün dünyaya bedeldir. Bize Kur\'ân okuyup okutmak ufak bir şey mi geliyor?', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bilgisiz bir kimse savaş davuluna benzer; sesi çoktur, içi boştur.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İki kişi iki kişiyi kıskanmaz; baba oğlunu, hoca talebesini.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Hocaların bir âdeti var: bir âyeti okusalar veya dinleseler, söylemek için hemen cemaat gelir hatırına. Halbuki hatırına önce kendini getirmeli. Farkında değil, başkalarına iyilik edecek, kendini yakacak.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İlmi olup da okutmayan, evlerinde boş boş oturan hoca hanımlar keşke iki talebe de olsa okutsaydım da âhirete ev hanımı vasfında gelmeseydim diyecek, bu yola hizmet etmediklerine çok pişman olacaklar.', author: 'Mahmud Efendi Kuddise Sirruhu' }
+];
+
 // Function to set random scholar photo
 function setRandomScholarPhoto() {
   const randomIndex = Math.floor(Math.random() * SCHOLAR_PHOTOS.length);
@@ -576,172 +631,36 @@ function updateMonthDisplay() {
 function renderQuotes() {
   if (!quotesList) return;
 
-  // Mahmud Efendi Kuddise Sirruhu'nun sözleri
-  const quotes = [
-    {
-      text: 'Gelirsiniz ver bana tarikat, sonra bırakırsınız, namaza başlar, bırakırsınız, çarşafı giyer, çıkarırsınız.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Şalvar giymekten utanırsınız, sakal, cübbe, çarşaf, uzun entari, bakın İslam kıyafetidir bu. Sen bunları giymekle "ben Müslüman\'ım, benim sağlığımda islamiyete kimse yan bakamaz" demek istiyorsun.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Çarşaflarınızı muhafaza ediyorsunuz Elhamdülillah, ama bilmiyorum entarileriniz nasıldır?',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Kadınların şerefi gizli kalmalarında ve erkeklerle görüşmemelerindedir. Kadın çalışacak diye tutturmuş, sonra aç kalırlarmış. Sen karışmasana, o Allahu Teala yarattığının rızkını verir.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Sizin çarşafınız bizim sarığımız, şalvarımız, sizi gören alacağını alıyor, birde tatlı sözlen konuşursan onunla, tamam.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Dilenci at üstünde gelse vereceksin, şüpheleniyorsan az ver, şüphelenmiyorsan çok ver.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Aklı başında olan adamın evinde televizyon olmaz.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'En büyük günah sorulursa, nedir? Kafirlere meyletmektir.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Karınca bacağı kadar olsa bile ekmek atmayın, bu bizi helak eder.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Televizyon hiç Mevla\'yı hatırlatır mı? Zehir zakkum akıtıyor.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Ruh ile beden bir olmazsa bir milyon kere Allah (c.c) desen boş.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Çarşaf giymekle büyük yiğitlik yapıyorsunuz, milletin tesettüre heves etmesine sebep oluyorsunuz.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Çarşafınızı iyi muhafaza edin. Şunu yakinen bilin ki; bir çarşafı, bir sarığı bozmakla Çeçenistan\'a gelen belayı bize de verebilir Cenab-ı hak.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Can vermeli çarşaftan vazgeçmemeli, ne güzel şeydir o.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Bu çarşafı giyen hanımlar, bilseler onların sayesinde neler oluyor, yatarken de giyerler. Siz ki Allah için tesettürünüzü muhafaza ettiniz O da sizi muhafaza eder.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Bir Hoca yüzbin televizyondan daha tesirlidir.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Rabıta muhabbetle olur, muhabbette ittiba ile olur. İttiba edersen seversin ve sevilirsin.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Mektubattan uzak kalındığı an feyiz kesilir.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Sarığı kabul etmeyenin Peygamberimiz (s.a.v.), Cebrail (a.s.), Allah-u Teala (c.c.)\'de kabul etmiyor.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Dünya içinde herşey melundur, fakat zikrullah ile meşgul olan emri bil maruf nehy-i anil münker yapan okuyan ve okutan değildir.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Avrupa modasına uymak, namazı terk etmekten daha ağır geliyor.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Televizyon seyreden dinini sevmiyor demektir.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Bir kimse asılacağından korktuğu gibi imandan küfre döneceğinden de öyle korkacak.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Sen nefsini hak ile meşgul etmezsen, nefis seni batıl ile meşgul eder.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Bir kimse emri bil maruf yapacağım diye yola çıksa sonra siyasetten bahsetse, onun azabını kimse ölçemez.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Dünya sevgisi insanı şaraptan daha sarhoş eder ve ateşe girmeye cesaret verir.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Kalın kafalı nefse uyarsan her yerde rezilsin.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'İnsan bir nefes sağ olsa çok ilerler.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Bütün haramlar nefse dostluk, Mevla\'ya (c.c.) düşmanlıktır.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Gezdiğimiz yerlerde talebe var, medrese yapacak para yok. Milyarlar gidiyor başka yerlere ama medreseye para yok. Bunların hepsi ahirette acısını çekecek.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'İlim, amel, ihlas. Üçü bir arada olsun, bunları cemet, dünyayı fethedersin.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'İnsanlar et gibi, ulemâ tuz gibidir. Tuzsuz et koktuğu gibi, ulemâdan ve onların sohbetinden mahrum kalanlar da kokar.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Ey talebeler! Sizler kurumuş toprakların yağmur yüklü bulutlarısınız. Direksiz kubbelerin direklerisiniz.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Bugünkü tahsil ölümden ötesini haber vermiyor. Buna siz nasıl yüksek tahsil dersiniz?',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Bir adam bir kişiye Kur\'ân okutsa bütün dünyaya bedeldir. Bize Kur\'ân okuyup okutmak ufak bir şey mi geliyor?',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Bilgisiz bir kimse savaş davuluna benzer; sesi çoktur, içi boştur.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'İki kişi iki kişiyi kıskanmaz; baba oğlunu, hoca talebesini.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'Hocaların bir âdeti var: bir âyeti okusalar veya dinleseler, söylemek için hemen cemaat gelir hatırına. Halbuki hatırına önce kendini getirmeli. Farkında değil, başkalarına iyilik edecek, kendini yakacak.',
-      author: 'Mahmud Efendi (k.s)'
-    },
-    {
-      text: 'İlmi olup da okutmayan, evlerinde boş boş oturan hoca hanımlar keşke iki talebe de olsa okutsaydım da âhirete ev hanımı vasfında gelmeseydim diyecek, bu yola hizmet etmediklerine çok pişman olacaklar.',
-      author: 'Mahmud Efendi (k.s)'
-    }
-  ];
+  // Rastgele karıştırma (Fisher-Yates shuffle)
+  const shuffledQuotes = [...SCHOLAR_QUOTES];
+  for (let i = shuffledQuotes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledQuotes[i], shuffledQuotes[j]] = [shuffledQuotes[j], shuffledQuotes[i]];
+  }
 
-  quotesList.innerHTML = quotes.map(quote => `
+  quotesList.innerHTML = shuffledQuotes.map(quote => `
     <div class="quote-card">
-      <p class="quote-text">${quote.text}</p>
-      <p class="quote-author">— ${quote.author}</p>
+      <div class="quote-content">
+        <i class="fas fa-quote-left quote-icon"></i>
+        <p class="quote-text">"${quote.text}"</p>
+        <div class="quote-author-container">
+          <span class="quote-line"></span>
+          <p class="quote-author">${quote.author}</p>
+        </div>
+      </div>
+      <div class="quote-actions">
+        <button class="quote-action-btn copy-btn" onclick="copyQuote('${quote.text.replace(/'/g, "\\'")}', '${quote.author.replace(/'/g, "\\'")}')" title="Kopyala">
+          <i class="fas fa-copy"></i>
+        </button>
+        <button class="quote-action-btn share-btn" onclick="shareQuote('${quote.text.replace(/'/g, "\\'")}', '${quote.author.replace(/'/g, "\\'")}')" title="Paylaş">
+          <i class="fas fa-share-alt"></i>
+        </button>
+      </div>
     </div>
   `).join('');
+
+  // Setup Intersection Observer for animations
+  setupQuoteObserver();
 }
 
 
@@ -760,8 +679,13 @@ const quoteModalOverlay = document.getElementById('quote-modal-overlay');
 const quoteModalClose = document.getElementById('quote-modal-close');
 const quoteModalText = document.getElementById('quote-modal-text');
 
-// Get all quotes (same array as in renderQuotes)
+// Get all quotes (new implementation using global constant)
 function getAllQuotes() {
+  return SCHOLAR_QUOTES;
+}
+
+// Get all quotes (old implementation - deprecated)
+function getAllQuotes_OLD() {
   return [
     {
       text: 'Gelirsiniz ver bana tarikat, sonra bırakırsınız, namaza başlar, bırakırsınız, çarşafı giyer, çıkarırsınız.',
