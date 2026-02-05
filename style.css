@@ -36,9 +36,9 @@ body {
 /* Scholar Portrait - Premium Frame */
 .scholar-portrait {
   position: relative;
-  width: 180px;
-  height: 180px;
-  margin: -60px auto 0 auto;
+  width: 240px;
+  height: 240px;
+  margin: -80px auto 0 auto;
   z-index: 10;
 }
 
@@ -68,8 +68,8 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 220px;
-  height: 220px;
+  width: 280px;
+  height: 280px;
   background: radial-gradient(circle, rgba(245, 158, 11, 0.2), transparent 70%);
   border-radius: 50%;
   pointer-events: none;

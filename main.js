@@ -6,6 +6,27 @@ const countdownEl = document.getElementById('countdown');
 const prayerTimesListEl = document.getElementById('prayer-times-list');
 const nafileListEl = document.getElementById('nafile-list');
 
+// Scholar Photos - Array of available photos
+const SCHOLAR_PHOTOS = [
+  '/namaz-vakti/assets/scholar.jpg',
+  '/namaz-vakti/assets/scholar-1.jpg',
+  '/namaz-vakti/assets/scholar-2.jpg',
+  '/namaz-vakti/assets/scholar-3.jpg',
+  '/namaz-vakti/assets/scholar-4.jpg'
+];
+
+// Function to set random scholar photo
+function setRandomScholarPhoto() {
+  const randomIndex = Math.floor(Math.random() * SCHOLAR_PHOTOS.length);
+  const photoPath = SCHOLAR_PHOTOS[randomIndex];
+  const portraitImg = document.querySelector('.portrait-frame img');
+
+  if (portraitImg) {
+    portraitImg.src = photoPath;
+    portraitImg.alt = 'Mahmud Efendi Hazretleri';
+  }
+}
+
 // Configuration
 const API_URL = 'https://api.aladhan.com/v1/timings';
 const CALCULATION_METHOD = 13; // Diyanet İşleri Başkanlığı
@@ -29,6 +50,9 @@ let nafileTimes = {};
 
 // Initialize
 async function init() {
+  // Set random scholar photo on each launch
+  setRandomScholarPhoto();
+
   updateDateDisplay();
 
   try {
