@@ -18,6 +18,18 @@ const SCHOLAR_PHOTOS = [
 
 // Scholar Quotes
 const SCHOLAR_QUOTES = [
+  // Yeni eklenenler (Resim 2)
+  { text: 'Bu yolda ölmeye geldik, okumaya devam.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Hepinizden memnunum ama ilim okuyanlardan daha çok memnunum.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İngilizce, Almanca, Fransızca bilirsiniz, Arapça bilmezsiniz. Eyvah eyvah! Hem de ne kadar eyvah!', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: '« كُلُّ حَافِظٍ جَاهِلٌ » Her hafız (ilim tahsil etmedikçe) cahildir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İlim fazlalaştıkça, ışığın artması gibi insanın kendi suçlarını görmesi lazım. O zaman kendini beğenmeye ve iftihara meydan kalmaz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bize çok hoca lazım. Dünyayı sevmeyen hoca.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Arkadaşlar! Diploma meraklısı olmayalım. İcazet meraklısı olalım. İlim bitirme meraklısı olalım.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Ateşin içinde sen gülistanda oturuyorsun. (Arapça okuyanlar için buyurdular.)', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'Bir hoca, talebesinin hem hocası, hem müdiresi, hem ablası, hem de annesi olmalı. (Kadınlara yaptığı vaazda)', author: 'Mahmud Efendi Kuddise Sirruhu' },
+  { text: 'İlmin neticesi olmayan bir hal, ne kadar büyük ve önemli olursa olsun, sahibine menfaatten çok zarar verir.', author: 'Mahmud Efendi Kuddise Sirruhu' },
+
   // Yeni eklenenler
   { text: 'Namazı vaktinde cemaatle kılalım, ondan sonra tesbihinizi çekeceksiniz.', author: 'Mahmud Efendi Kuddise Sirruhu' },
   { text: 'Yumurtanız burada beş kuruş, Beykoz\'da yirmi beş kuruş olsa, yemin ederim Beykoz\'da satarsınız. Peki namazı nasıl evde (kılar da ucuza) satarsın.', author: 'Mahmud Efendi Kuddise Sirruhu' },
